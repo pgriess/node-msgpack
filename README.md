@@ -3,6 +3,20 @@ API for serializing and de-serializing JavaScript objects using the
 [MessagePack](http://msgpack.sourceforge.net) library. The results of this
 serialization are extremely space-efficient compared to JSON.
 
+### Performance
+
+`node-msgpack` outperforms the built-in `JSON.stringify()` and `JSON.parse()`
+methods handily. The following tests were performed with 500,000 instances of
+the JavaScript object `{'abcdef' : 1, 'qqq' : 13, '19' : [1, 2, 3, 4]}`:
+
+   * `JSON.stringify()` 7.17 seconds
+   * `JSON.parse(JSON.stringify())` 22.18 seconds
+   * `msgpack.pack()` 5.80 seconds
+   * `msgpack.unpack(msgpack.pack())` 8.62 seconds
+
+Note that `node-msgpack` produces and consumes Buffer objects, and a such does
+not incur encoding/decoding overhead when performing I/O with native strings.
+
 ### Building and installation
 
 Installation is a manual process: use `make` to build the add-on, then manually
