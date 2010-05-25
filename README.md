@@ -1,7 +1,8 @@
 `node-msgpack` is an addon for [node.js](http://nodejs.org) that provides an
 API for serializing and de-serializing JavaScript objects using the
-[MessagePack](http://msgpack.sourceforge.net) library. The results of this
-serialization are extremely space-efficient compared to JSON.
+[MessagePack](http://msgpack.sourceforge.net) library. The performance of this
+addon compared to the native `JSON` object is quite good, and the space
+required for serialized data is far less than JSON.
 
 ### Performance
 
