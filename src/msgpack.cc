@@ -9,7 +9,7 @@
 using namespace v8;
 using namespace node;
 
-// Convert a v8 object to a MessagePack object.
+// Convert a V8 object to a MessagePack object.
 //
 // This method is recursive. It will probably blow out the stack on objects
 // with extremely deep nesting.
@@ -72,11 +72,70 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz) {
     }
 }
 
-// var buf = msgpack.pack(obj);
+// Convert a MessagePack object to a V8 object.
+//
+// This method is recursive. It will probably blow out the stack on objects
+// with extremely deep nesting.
+static Handle<Value>
+msgpack_to_v8(msgpack_object *mo) {
+    switch (mo->type) {
+    case MSGPACK_OBJECT_NIL:
+        return Null();
+
+    case MSGPACK_OBJECT_BOOLEAN:
+        return (mo->via.boolean) ?
+            True() :
+            False();
+
+    case MSGPACK_OBJECT_POSITIVE_INTEGER:
+        return Integer::NewFromUnsigned(mo->via.u64);
+
+    case MSGPACK_OBJECT_NEGATIVE_INTEGER:
+        return Integer::New(mo->via.i64);
+
+    case MSGPACK_OBJECT_DOUBLE:
+        return Number::New(mo->via.dec);
+
+    case MSGPACK_OBJECT_ARRAY: {
+        Local<Array> a = Array::New(mo->via.array.size);
+
+        for (int i = 0; i < mo->via.array.size; i++) {
+            a->Set(i, msgpack_to_v8(&mo->via.array.ptr[i]));
+        }
+
+        return a;
+    }
+
+    case MSGPACK_OBJECT_RAW:
+        return String::New(mo->via.raw.ptr, mo->via.raw.size);
+
+    case MSGPACK_OBJECT_MAP: {
+        Local<Object> o = Object::New();
+
+        for (int i = 0; i < mo->via.map.size; i++) {
+            o->Set(
+                msgpack_to_v8(&mo->via.map.ptr[i].key),
+                msgpack_to_v8(&mo->via.map.ptr[i].val)
+            );
+        }
+
+        return o;
+    }
+
+    default:
+        return ThrowException(Exception::Error(
+            String::New("Encountered unknown MessagePack object type")));
+    }
+}
+
+// var buf = msgpack.pack(obj[, obj ...]);
 //
 // Returns a Buffer object representing the serialized state of the provided
 // JavaScript object. If more arguments are provided, their serialized state
 // will be accumulated to the end of the previous value(s).
+//
+// Any number of objects can be provided as arguments, and all will be
+// serialized to the same bytestream, back-ty-back.
 static Handle<Value>
 pack(const Arguments &args) {
     HandleScope scope;
@@ -109,11 +168,49 @@ pack(const Arguments &args) {
     return scope.Close(bp->handle_);
 }
 
+// var o = msgpack.unpack(buf);
+//
+// Return the JavaScript object resulting from unpacking the contents of the
+// specified buffer.
+static Handle<Value>
+unpack(const Arguments &args) {
+    HandleScope scope;
+
+    if (args.Length() < 0 || !Buffer::HasInstance(args[0])) {
+        return ThrowException(Exception::TypeError(
+            String::New("First argument must be a Buffer")));
+    }
+
+    Buffer *buf = ObjectWrap::Unwrap<Buffer>(args[0]->ToObject());
+
+    msgpack_zone mz;
+    msgpack_object mo;
+    size_t off = 0;
+
+    msgpack_zone_init(&mz, 1024);
+
+    switch (msgpack_unpack(buf->data(), buf->length(), &off, &mz, &mo)) {
+    case MSGPACK_UNPACK_EXTRA_BYTES:
+        fprintf(stderr, "msgpack::unpack() got %d extra bytes\n", off);
+        /* fall through */
+
+    case MSGPACK_UNPACK_SUCCESS:
+        msgpack_zone_destroy(&mz);
+        return scope.Close(msgpack_to_v8(&mo));
+
+    default:
+        msgpack_zone_destroy(&mz);
+        return ThrowException(Exception::Error(
+            String::New("Error de-serializing object")));
+    }
+}
+
 extern "C" void
 init(Handle<Object> target) {
     HandleScope scope;
 
     NODE_SET_METHOD(target, "pack", pack);
+    NODE_SET_METHOD(target, "unpack", unpack);
 }
 
 // vim:ts=4 sw=4 et
