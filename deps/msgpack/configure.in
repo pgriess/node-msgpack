@@ -1,0 +1,43 @@
+AC_INIT(object.cpp)
+AC_CONFIG_AUX_DIR(ac)
+AM_INIT_AUTOMAKE(msgpack, 0.5.0)
+AC_CONFIG_HEADER(config.h)
+
+AC_SUBST(CFLAGS)
+CFLAGS="-O4 -Wall $CFLAGS"
+
+AC_SUBST(CXXFLAGS)
+CXXFLAGS="-O4 -Wall $CXXFLAGS"
+
+AC_PROG_CC
+AC_PROG_CXX
+
+AC_PROG_LIBTOOL
+AM_PROG_AS
+AM_PROG_CC_C_O
+
+AC_LANG_PUSH([C++])
+AC_CHECK_HEADERS(tr1/unordered_map)
+AC_CHECK_HEADERS(tr1/unordered_set)
+AC_LANG_POP([C++])
+
+AC_CACHE_CHECK([for __sync_* atomic operations], msgpack_cv_atomic_ops, [
+	AC_TRY_LINK([
+		int atomic_sub(int i) { return __sync_sub_and_fetch(&i, 1); }
+		int atomic_add(int i) { return __sync_add_and_fetch(&i, 1); }
+	], [], msgpack_cv_atomic_ops="yes")
+	])
+if test "$msgpack_cv_atomic_ops" != "yes"; then
+	AC_MSG_ERROR([__sync_* atomic operations are not supported.
+
+Note that gcc < 4.1 is not supported.
+
+If you are using gcc >= 4.1 and the default target CPU architecture is "i386", try to
+add CFLAGS="--march=i686" and CXXFLAGS="-march=i686" options to ./configure as follows:
+
+  $ ./configure CFLAGS="-march=i686" CXXFLAGS="-march=i686"
+])
+fi
+
+AC_OUTPUT([Makefile test/Makefile])
+
