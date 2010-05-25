@@ -53,6 +53,22 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz) {
             v8_to_msgpack(v, &mo->via.array.ptr[i], mz);
         }
     } else {
+        Local<Object> o = v8obj->ToObject();
+        Local<Array> a = o->GetPropertyNames();
+
+        mo->type = MSGPACK_OBJECT_MAP;
+        mo->via.map.size = a->Length();
+        mo->via.map.ptr = (msgpack_object_kv*) msgpack_zone_malloc(
+            mz,
+            sizeof(msgpack_object_kv) * mo->via.map.size
+        );
+
+        for (int i = 0; i < a->Length(); i++) {
+            Local<Value> k = a->Get(i);
+
+            v8_to_msgpack(k, &mo->via.map.ptr[i].key, mz);
+            v8_to_msgpack(o->Get(k), &mo->via.map.ptr[i].val, mz);
+        }
     }
 }
 
