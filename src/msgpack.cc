@@ -13,9 +13,6 @@ using namespace node;
 //
 // This method is recursive. It will probably blow out the stack on objects
 // with extremely deep nesting.
-//
-// XXX: Look into whether or not MSGPACK_OBJECT_*_INTEGER values get packed
-//      optimally according to their magnitude.
 static void
 v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz) {
     if (v8obj->IsUndefined() || v8obj->IsNull()) {
@@ -56,32 +53,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz) {
             v8_to_msgpack(v, &mo->via.array.ptr[i], mz);
         }
     } else {
-        // XXX: Handle objects
     }
-}
-
-// A re-implementation of msgpack_sbuffer_write() that handles realloc(3)
-// failures without barfing.
-static int
-pack_write(void *data, const char *buf, unsigned int len) {
-	msgpack_sbuffer* sbuf = (msgpack_sbuffer*)data;
-
-	if(sbuf->alloc - sbuf->size < len) {
-		size_t nsize = (sbuf->alloc) ?
-				sbuf->alloc * 2 : MSGPACK_SBUFFER_INIT_SIZE;
-
-		while(nsize < sbuf->size + len) { nsize *= 2; }
-
-		void* tmp = realloc(sbuf->data, nsize);
-		if(!tmp) { return -1; }
-
-		sbuf->data = (char*)tmp;
-		sbuf->alloc = nsize;
-	}
-
-	memcpy(sbuf->data + sbuf->size, buf, len);
-	sbuf->size += len;
-	return 0;
 }
 
 // var buf = msgpack.pack(obj);
@@ -98,7 +70,7 @@ pack(const Arguments &args) {
     msgpack_zone mz;
   
     msgpack_sbuffer_init(&sbuf);
-    msgpack_packer_init(&pk, &sbuf, pack_write);
+    msgpack_packer_init(&pk, &sbuf, msgpack_sbuffer_write);
 
     msgpack_zone_init(&mz, 1024);
 
