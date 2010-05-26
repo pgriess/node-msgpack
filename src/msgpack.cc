@@ -26,6 +26,34 @@ class MsgpackException {
         const Handle<String> msg;
 };
 
+// A holder for a msgpack_zone object; ensures destruction on scope exit
+class MsgpackZone {
+    public:
+        msgpack_zone _mz;
+
+        MsgpackZone(size_t sz = 1024) {
+            msgpack_zone_init(&this->_mz, sz);
+        }
+
+        ~MsgpackZone() {
+            msgpack_zone_destroy(&this->_mz);
+        }
+};
+
+// A holder for a msgpack_sbuffer object; ensures destruction on scope exit
+class MsgpackSbuffer {
+    public:
+        msgpack_sbuffer _sbuf;
+
+        MsgpackSbuffer() {
+            msgpack_sbuffer_init(&this->_sbuf);
+        }
+
+        ~MsgpackSbuffer() {
+            msgpack_sbuffer_destroy(&this->_sbuf);
+        }
+};
+
 #define CHECK_CIRCULAR_REFS(o, t) \
     do { \
         Local<Value> ov = (o)->GetHiddenValue(msgpack_tag_symbol); \
@@ -204,20 +232,17 @@ pack(const Arguments &args) {
     HandleScope scope;
 
     msgpack_packer pk;
-    msgpack_sbuffer sbuf;
-    msgpack_zone mz;
+    MsgpackZone mz;
+    MsgpackSbuffer sb;
     Local<Value> tag = Integer::New(++tag_i);
   
-    msgpack_sbuffer_init(&sbuf);
-    msgpack_packer_init(&pk, &sbuf, msgpack_sbuffer_write);
-
-    msgpack_zone_init(&mz, 1024);
+    msgpack_packer_init(&pk, &sb._sbuf, msgpack_sbuffer_write);
 
     for (int i = 0; i < args.Length(); i++) {
         msgpack_object mo;
 
         try {
-            v8_to_msgpack(args[0], &mo, &mz, tag);
+            v8_to_msgpack(args[0], &mo, &mz._mz, tag);
         } catch (MsgpackException e) {
             return e.getThrownException();
         }
@@ -228,11 +253,8 @@ pack(const Arguments &args) {
         }
     }
 
-    Buffer *bp = Buffer::New(sbuf.size);
-    memcpy(bp->data(), sbuf.data, sbuf.size);
-
-    msgpack_zone_destroy(&mz);
-    msgpack_sbuffer_destroy(&sbuf);
+    Buffer *bp = Buffer::New(sb._sbuf.size);
+    memcpy(bp->data(), sb._sbuf.data, sb._sbuf.size);
 
     return scope.Close(bp->handle_);
 }
@@ -252,19 +274,16 @@ unpack(const Arguments &args) {
 
     Buffer *buf = ObjectWrap::Unwrap<Buffer>(args[0]->ToObject());
 
-    msgpack_zone mz;
+    MsgpackZone mz;
     msgpack_object mo;
     size_t off = 0;
 
-    msgpack_zone_init(&mz, 1024);
-
-    switch (msgpack_unpack(buf->data(), buf->length(), &off, &mz, &mo)) {
+    switch (msgpack_unpack(buf->data(), buf->length(), &off, &mz._mz, &mo)) {
     case MSGPACK_UNPACK_EXTRA_BYTES:
         fprintf(stderr, "msgpack::unpack() got %lu extra bytes\n", off);
         /* fall through */
 
     case MSGPACK_UNPACK_SUCCESS:
-        msgpack_zone_destroy(&mz);
         try {
             return scope.Close(msgpack_to_v8(&mo));
         } catch (MsgpackException e) {
@@ -272,7 +291,6 @@ unpack(const Arguments &args) {
         }
 
     default:
-        msgpack_zone_destroy(&mz);
         return ThrowException(Exception::Error(
             String::New("Error de-serializing object")));
     }
