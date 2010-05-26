@@ -14,7 +14,7 @@ static Persistent<String> msgpack_tag_symbol;
 // An exception class that wraps a textual message
 class MsgpackException {
     public:
-        MsgpackException::MsgpackException(const char *str) :
+        MsgpackException(const char *str) :
             msg(String::New(str)) {
         }
 
