@@ -42,6 +42,11 @@ As a convenience and for debugging, `bin/json2msgpack` and `bin/msgpack2json`
 are provided to convert JSON data to and from MessagePack data, reading from
 stdin and writing to stdout.
 
+    % echo '[1, 2, 3]' | ./bin/json2msgpack | xxd -
+    0000000: 9301 0203                                ....
+    % echo '[1, 2, 3]' | ./bin/json2msgpack | ./bin/msgpack2json 
+    [1,2,3]
+
 ### Building and installation
 
 This module depends on an unreleased feature of node.js; you must build it
