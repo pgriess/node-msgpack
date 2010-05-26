@@ -11,14 +11,50 @@ using namespace node;
 
 static Persistent<String> msgpack_tag_symbol;
 
+// An exception class that wraps a textual message
+class MsgpackException {
+    public:
+        MsgpackException::MsgpackException(const char *str) :
+            msg(String::New(str)) {
+        }
+
+        Handle<Value> getThrownException() {
+            return ThrowException(Exception::TypeError(msg));
+        }
+
+    private:
+        const Handle<String> msg;
+};
+
 #define CHECK_CIRCULAR_REFS(o, t) \
     do { \
         Local<Value> ov = (o)->GetHiddenValue(msgpack_tag_symbol); \
         if (!ov.IsEmpty() && ov->Equals(t)) { \
-            return false; \
+            throw MsgpackException( \
+                "Cowardly refusing to pack object with circular reference" \
+            ); \
         } \
         (o)->SetHiddenValue(msgpack_tag_symbol, (t)); \
     } while(0)
+
+#define DBG_PRINT_BUF(buf, name) \
+    do { \
+        fprintf(stderr, "Buffer %s has %lu bytes:\n", \
+            (name), (buf)->length() \
+        ); \
+        for (uint32_t i = 0; i * 16 < (buf)->length(); i++) { \
+            fprintf(stderr, "  "); \
+            for (uint32_t ii = 0; \
+                 ii < 16 && (i * 16) + ii < (buf)->length(); \
+                 ii++) { \
+                fprintf(stderr, "%s%2.2hhx", \
+                    (ii > 0 && (ii % 2 == 0)) ? " " : "", \
+                    (buf)->data()[i * 16 + ii] \
+                ); \
+            } \
+            fprintf(stderr, "\n"); \
+        } \
+    } while (0)
 
 // Convert a V8 object to a MessagePack object.
 //
@@ -33,8 +69,8 @@ static Persistent<String> msgpack_tag_symbol;
 // revisited in the future if this proves problematic. I'd expect most objects
 // being packed to be short-lived anyway.
 //
-// Returns false if we detected a circular reference; true otherwise.
-static bool
+// If a circular reference is detected, an exception is thrown.
+static void
 v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, Handle<Value> tag) {
     if (v8obj->IsUndefined() || v8obj->IsNull()) {
         mo->type = MSGPACK_OBJECT_NIL;
@@ -74,9 +110,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, Handle<
 
         for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> v = a->Get(i);
-            if (!v8_to_msgpack(v, &mo->via.array.ptr[i], mz, tag)) {
-                return false;
-            }
+            v8_to_msgpack(v, &mo->via.array.ptr[i], mz, tag);
         }
     } else {
         Local<Object> o = v8obj->ToObject();
@@ -94,17 +128,10 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, Handle<
         for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> k = a->Get(i);
 
-            if (!v8_to_msgpack(k, &mo->via.map.ptr[i].key, mz, tag)) {
-                return false;
-            }
-
-            if (!v8_to_msgpack(o->Get(k), &mo->via.map.ptr[i].val, mz, tag)) {
-                return false;
-            }
+            v8_to_msgpack(k, &mo->via.map.ptr[i].key, mz, tag);
+            v8_to_msgpack(o->Get(k), &mo->via.map.ptr[i].val, mz, tag);
         }
     }
-
-    return true;
 }
 
 // Convert a MessagePack object to a V8 object.
@@ -158,8 +185,7 @@ msgpack_to_v8(msgpack_object *mo) {
     }
 
     default:
-        return ThrowException(Exception::Error(
-            String::New("Encountered unknown MessagePack object type")));
+        throw MsgpackException("Encountered unknown MesssagePack object type");
     }
 }
 
@@ -190,10 +216,10 @@ pack(const Arguments &args) {
     for (int i = 0; i < args.Length(); i++) {
         msgpack_object mo;
 
-        if (!v8_to_msgpack(args[0], &mo, &mz, tag)) {
-            return ThrowException(Exception::TypeError(String::New(
-                "Cowardly refusing to pack object with circular reference"
-            )));
+        try {
+            v8_to_msgpack(args[0], &mo, &mz, tag);
+        } catch (MsgpackException e) {
+            return e.getThrownException();
         }
 
         if (msgpack_pack_object(&pk, mo)) {
@@ -239,7 +265,11 @@ unpack(const Arguments &args) {
 
     case MSGPACK_UNPACK_SUCCESS:
         msgpack_zone_destroy(&mz);
-        return scope.Close(msgpack_to_v8(&mo));
+        try {
+            return scope.Close(msgpack_to_v8(&mo));
+        } catch (MsgpackException e) {
+            return e.getThrownException();
+        }
 
     default:
         msgpack_zone_destroy(&mz);
