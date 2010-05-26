@@ -20,6 +20,11 @@ not incur encoding/decoding overhead when performing I/O with native strings.
 
 ### Building and installation
 
+This module depends on an unreleased feature of node.js; you must build it
+against a tree that contains change
+[3768aaae](http://github.com/ry/node/commit/3768aaaea406dd32db2f74395f6414bcd26dba74).
+An official release that contains this change should be out shortly.
+
 Installation is a manual process: use `make` to build the add-on, then manually
 copy it to wherever your node.js installation will look for it (or add the
 build directory to your `$NODE_PATH`).
