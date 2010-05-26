@@ -18,6 +18,30 @@ the JavaScript object `{'abcdef' : 1, 'qqq' : 13, '19' : [1, 2, 3, 4]}`:
 Note that `node-msgpack` produces and consumes Buffer objects, and a such does
 not incur encoding/decoding overhead when performing I/O with native strings.
 
+### Usage
+
+This module provides two methods: `pack()`, which consumes a JavaScript object
+and produces a node Buffer object; and `unpack()`, which consumes a node Buffer
+object and produces a JavaScript object.
+
+The below code snippet packs and then unpacks a JavaScript object, verifying
+the resulting object at the end using `assert.deepEqual()`.
+
+    var assert = require('assert');
+    var msgpack = require('msgpack');
+
+    var o = {"a" : 1, "b" : 2, "c" : [1, 2, 3]};
+    var b = msgpack.pack(o);
+    var oo = msgpack.unpack(b);
+
+    assert.deepEqual(oo, o);
+
+### Command Line Utilities
+
+As a convenience and for debugging, `bin/json2msgpack` and `bin/msgpack2json`
+are provided to convert JSON data to and from MessagePack data, reading from
+stdin and writing to stdout.
+
 ### Building and installation
 
 This module depends on an unreleased feature of node.js; you must build it
