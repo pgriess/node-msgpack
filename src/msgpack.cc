@@ -72,7 +72,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, Handle<
             sizeof(msgpack_object) * mo->via.array.size
         );
 
-        for (int i = 0; i < a->Length(); i++) {
+        for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> v = a->Get(i);
             if (!v8_to_msgpack(v, &mo->via.array.ptr[i], mz, tag)) {
                 return false;
@@ -91,7 +91,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, Handle<
             sizeof(msgpack_object_kv) * mo->via.map.size
         );
 
-        for (int i = 0; i < a->Length(); i++) {
+        for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> k = a->Get(i);
 
             if (!v8_to_msgpack(k, &mo->via.map.ptr[i].key, mz, tag)) {
@@ -134,7 +134,7 @@ msgpack_to_v8(msgpack_object *mo) {
     case MSGPACK_OBJECT_ARRAY: {
         Local<Array> a = Array::New(mo->via.array.size);
 
-        for (int i = 0; i < mo->via.array.size; i++) {
+        for (uint32_t i = 0; i < mo->via.array.size; i++) {
             a->Set(i, msgpack_to_v8(&mo->via.array.ptr[i]));
         }
 
@@ -147,7 +147,7 @@ msgpack_to_v8(msgpack_object *mo) {
     case MSGPACK_OBJECT_MAP: {
         Local<Object> o = Object::New();
 
-        for (int i = 0; i < mo->via.map.size; i++) {
+        for (uint32_t i = 0; i < mo->via.map.size; i++) {
             o->Set(
                 msgpack_to_v8(&mo->via.map.ptr[i].key),
                 msgpack_to_v8(&mo->via.map.ptr[i].val)
@@ -234,7 +234,7 @@ unpack(const Arguments &args) {
 
     switch (msgpack_unpack(buf->data(), buf->length(), &off, &mz, &mo)) {
     case MSGPACK_UNPACK_EXTRA_BYTES:
-        fprintf(stderr, "msgpack::unpack() got %d extra bytes\n", off);
+        fprintf(stderr, "msgpack::unpack() got %lu extra bytes\n", off);
         /* fall through */
 
     case MSGPACK_UNPACK_SUCCESS:

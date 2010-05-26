@@ -14,7 +14,7 @@ def build(ctx):
     t.target = 'msgpack'
     t.source = 'msgpack.cc'
     t.includes = ['../deps/msgpack/dist/include']
-    t.cxxflags = ['-g']
+    t.cxxflags = ['-g', '-Wall']
     t.lib = ['msgpack']
     t.libpath = ['../deps/msgpack/dist/lib']
 
