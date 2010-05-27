@@ -265,7 +265,8 @@ pack(const Arguments &args) {
 // var o = msgpack.unpack(buf);
 //
 // Return the JavaScript object resulting from unpacking the contents of the
-// specified buffer.
+// specified buffer. If the buffer does not contain a complete object, the
+// undefined value is returned.
 static Handle<Value>
 unpack(const Arguments &args) {
     HandleScope scope;
@@ -293,6 +294,9 @@ unpack(const Arguments &args) {
         } catch (MsgpackException e) {
             return e.getThrownException();
         }
+    
+    case MSGPACK_UNPACK_CONTINUE:
+        return scope.Close(Undefined());
 
     default:
         return ThrowException(Exception::Error(
