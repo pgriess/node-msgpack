@@ -11,7 +11,7 @@ def configure(ctx):
 
 def build(ctx):
     t = ctx.new_task_gen('cxx', 'shlib', 'node_addon')
-    t.target = 'msgpack'
+    t.target = 'mpBindings'
     t.source = 'msgpack.cc'
     t.includes = ['../deps/msgpack/dist/include']
     t.cxxflags = ['-g', '-Wall']
