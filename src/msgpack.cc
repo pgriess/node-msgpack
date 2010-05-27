@@ -10,6 +10,9 @@ using namespace v8;
 using namespace node;
 
 static Persistent<String> msgpack_tag_symbol;
+static Persistent<String> msgpack_bytes_remaining_symbol;
+
+static Persistent<FunctionTemplate> msgpack_unpack_template;
 
 // An exception class that wraps a textual message
 class MsgpackException {
@@ -280,11 +283,12 @@ unpack(const Arguments &args) {
 
     switch (msgpack_unpack(buf->data(), buf->length(), &off, &mz._mz, &mo)) {
     case MSGPACK_UNPACK_EXTRA_BYTES:
-        fprintf(stderr, "msgpack::unpack() got %lu extra bytes\n", off);
-        /* fall through */
-
     case MSGPACK_UNPACK_SUCCESS:
         try {
+            msgpack_unpack_template->GetFunction()->Set(
+                msgpack_bytes_remaining_symbol,
+                Integer::New(buf->length() - off)
+            );
             return scope.Close(msgpack_to_v8(&mo));
         } catch (MsgpackException e) {
             return e.getThrownException();
@@ -301,9 +305,19 @@ init(Handle<Object> target) {
     HandleScope scope;
 
     NODE_SET_METHOD(target, "pack", pack);
-    NODE_SET_METHOD(target, "unpack", unpack);
+
+    // Go through this mess rather than call NODE_SET_METHOD so that we can set
+    // a field on the function for 'bytes_remaining'.
+    msgpack_unpack_template = Persistent<FunctionTemplate>::New(
+        FunctionTemplate::New(unpack)
+    );
+    target->Set(
+        String::NewSymbol("unpack"),
+        msgpack_unpack_template->GetFunction()
+    );
 
     msgpack_tag_symbol = NODE_PSYMBOL("msgpack::tag");
+    msgpack_bytes_remaining_symbol = NODE_PSYMBOL("bytes_remaining");
 }
 
 // vim:ts=4 sw=4 et
