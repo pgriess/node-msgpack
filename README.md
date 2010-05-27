@@ -36,6 +36,18 @@ the resulting object at the end using `assert.deepEqual()`.
 
     assert.deepEqual(oo, o);
 
+As a convenience, a higher level streaming API is provided in the
+`msgpack.Stream` class, which can be constructed around a `net.Stream`
+instance. This object emits `msg` events when an object has been received.
+
+    var msgpack = require('msgpack');
+
+    // ... get a net.Stream instance, s, from somewhere
+    var ms = new msgpack.Stream(s);
+    ms.addListener('msg', function(m) {
+        sys.debug('received message: ' + sys.inspect(m));
+    });
+
 ### Command Line Utilities
 
 As a convenience and for debugging, `bin/json2msgpack` and `bin/msgpack2json`
