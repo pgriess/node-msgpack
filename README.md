@@ -68,8 +68,9 @@ against a tree that contains change
 An official release that contains this change should be out shortly.
 
 Installation is a manual process: use `make` to build the add-on, then manually
-copy it to wherever your node.js installation will look for it (or add the
-build directory to your `$NODE_PATH`).
+copy `build/default/mpBindings.node` and `lib/msgpack.js` it to wherever your
+node.js installation will look for it (or add the build directory to your
+`$NODE_PATH`).
 
     % ls
     LICENSE  Makefile  README.md  deps/  src/  tags  test.js
