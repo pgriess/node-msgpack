@@ -5,12 +5,10 @@
 #include <node_buffer.h>
 #include <msgpack.h>
 #include <math.h>
+#include <vector>
 
 using namespace v8;
 using namespace node;
-
-static Persistent<String> msgpack_tag_symbol;
-static Persistent<String> msgpack_bytes_remaining_symbol;
 
 static Persistent<FunctionTemplate> msgpack_unpack_template;
 
@@ -57,16 +55,55 @@ class MsgpackSbuffer {
         }
 };
 
-#define CHECK_CIRCULAR_REFS(o, t) \
-    do { \
-        Local<Value> ov = (o)->GetHiddenValue(msgpack_tag_symbol); \
-        if (!ov.IsEmpty() && ov->Equals(t)) { \
-            throw MsgpackException( \
-                "Cowardly refusing to pack object with circular reference" \
-            ); \
-        } \
-        (o)->SetHiddenValue(msgpack_tag_symbol, (t)); \
-    } while(0)
+// Object to check for cycles when packing.
+//
+// The implementation tracks all previously-seen values in an unordered
+// std::vector and performs a simple membership check using
+// v8::Value::StrictEquals(). Thus, serialization requires O(n^2) checks where
+// n is the number of array/object instances found in the object being
+// serialized. This is lame.
+//
+// XXX: Change this to a std::multimap based on v8::Object::GetIdentityHash()
+//      to reduce the search space. This should get us down to O(n log n) with
+//      a std::multimap built on top of a RBT or similar.
+//
+// XXX: An even better fix for this would be to use
+//      v8::Object::SetHiddenValue(), but this causes memory leaks for some
+//      reason (see http://github.com/pgriess/node-msgpack/issues/#issue/4)
+class MsgpackCycle {
+    public:
+        MsgpackCycle() {
+        }
+
+        ~MsgpackCycle() {
+            _objs.clear();
+        }
+
+        void check(Handle<Value> v) {
+            if (!v->IsArray() && !v->IsObject()) {
+                return;
+            }
+
+            Handle<Object> o = v->ToObject();
+
+            for (std::vector< Handle<Object> >::iterator iter = _objs.begin();
+                 iter != _objs.end();
+                 iter++) {
+                if ((*iter)->StrictEquals(o)) {
+                    // This message should not change without updating
+                    // test/test.js to expect the new text
+                    throw MsgpackException( \
+                        "Cowardly refusing to pack object with circular reference" \
+                    ); 
+                }
+            }
+
+            _objs.push_back(o);
+        }
+
+    private:
+        std::vector< Handle<Object> > _objs;
+};
 
 #define DBG_PRINT_BUF(buf, name) \
     do { \
@@ -92,17 +129,12 @@ class MsgpackSbuffer {
 // This method is recursive. It will probably blow out the stack on objects
 // with extremely deep nesting.
 //
-// This method can detect circular references in provided objects. It utilizes
-// the v8::Object::SetHiddenValue() facility to tag each encountered object
-// with a value unique to this serialization run. We leave the tags attached to
-// each object for ease-of-implementation (otherwise we'd have to track each
-// tagged v8::Object instance and un-tag at the end). This decision can be
-// revisited in the future if this proves problematic. I'd expect most objects
-// being packed to be short-lived anyway.
-//
 // If a circular reference is detected, an exception is thrown.
 static void
-v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, Handle<Value> tag) {
+v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
+              MsgpackCycle *mc) {
+    mc->check(v8obj);
+
     if (v8obj->IsUndefined() || v8obj->IsNull()) {
         mo->type = MSGPACK_OBJECT_NIL;
     } else if (v8obj->IsBoolean()) {
@@ -130,8 +162,6 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, Handle<
         Local<Object> o = v8obj->ToObject();
         Local<Array> a = Local<Array>::Cast(o);
 
-        CHECK_CIRCULAR_REFS(o, tag);
-
         mo->type = MSGPACK_OBJECT_ARRAY;
         mo->via.array.size = a->Length();
         mo->via.array.ptr = (msgpack_object*) msgpack_zone_malloc(
@@ -141,13 +171,11 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, Handle<
 
         for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> v = a->Get(i);
-            v8_to_msgpack(v, &mo->via.array.ptr[i], mz, tag);
+            v8_to_msgpack(v, &mo->via.array.ptr[i], mz, mc);
         }
     } else {
         Local<Object> o = v8obj->ToObject();
         Local<Array> a = o->GetPropertyNames();
-
-        CHECK_CIRCULAR_REFS(o, tag);
 
         mo->type = MSGPACK_OBJECT_MAP;
         mo->via.map.size = a->Length();
@@ -159,8 +187,8 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, Handle<
         for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> k = a->Get(i);
 
-            v8_to_msgpack(k, &mo->via.map.ptr[i].key, mz, tag);
-            v8_to_msgpack(o->Get(k), &mo->via.map.ptr[i].val, mz, tag);
+            v8_to_msgpack(k, &mo->via.map.ptr[i].key, mz, mc);
+            v8_to_msgpack(o->Get(k), &mo->via.map.ptr[i].val, mz, mc);
         }
     }
 }
@@ -230,22 +258,20 @@ msgpack_to_v8(msgpack_object *mo) {
 // serialized to the same bytestream, back-ty-back.
 static Handle<Value>
 pack(const Arguments &args) {
-    static int64_t tag_i = 0;
-
     HandleScope scope;
 
     msgpack_packer pk;
     MsgpackZone mz;
     MsgpackSbuffer sb;
-    Local<Value> tag = Integer::New(++tag_i);
-  
+    MsgpackCycle mc;
+
     msgpack_packer_init(&pk, &sb._sbuf, msgpack_sbuffer_write);
 
     for (int i = 0; i < args.Length(); i++) {
         msgpack_object mo;
 
         try {
-            v8_to_msgpack(args[0], &mo, &mz._mz, tag);
+            v8_to_msgpack(args[0], &mo, &mz._mz, &mc);
         } catch (MsgpackException e) {
             return ThrowException(e.getThrownException());
         }
@@ -269,6 +295,9 @@ pack(const Arguments &args) {
 // undefined value is returned.
 static Handle<Value>
 unpack(const Arguments &args) {
+    static Persistent<String> msgpack_bytes_remaining_symbol = 
+        NODE_PSYMBOL("bytes_remaining");
+
     HandleScope scope;
 
     if (args.Length() < 0 || !Buffer::HasInstance(args[0])) {
@@ -319,9 +348,6 @@ init(Handle<Object> target) {
         String::NewSymbol("unpack"),
         msgpack_unpack_template->GetFunction()
     );
-
-    msgpack_tag_symbol = NODE_PSYMBOL("msgpack::tag");
-    msgpack_bytes_remaining_symbol = NODE_PSYMBOL("bytes_remaining");
 }
 
 // vim:ts=4 sw=4 et
