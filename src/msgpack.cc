@@ -22,7 +22,7 @@ class MsgpackException {
         }
 
         Handle<Value> getThrownException() {
-            return ThrowException(Exception::TypeError(msg));
+            return Exception::TypeError(msg);
         }
 
     private:
@@ -247,7 +247,7 @@ pack(const Arguments &args) {
         try {
             v8_to_msgpack(args[0], &mo, &mz._mz, tag);
         } catch (MsgpackException e) {
-            return e.getThrownException();
+            return ThrowException(e.getThrownException());
         }
 
         if (msgpack_pack_object(&pk, mo)) {
@@ -292,7 +292,7 @@ unpack(const Arguments &args) {
             );
             return scope.Close(msgpack_to_v8(&mo));
         } catch (MsgpackException e) {
-            return e.getThrownException();
+            return ThrowException(e.getThrownException());
         }
     
     case MSGPACK_UNPACK_CONTINUE:
