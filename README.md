@@ -62,10 +62,7 @@ stdin and writing to stdout.
 
 ### Building and installation
 
-This module depends on an unreleased feature of node.js; you must build it
-against a tree that contains change
-[3768aaae](http://github.com/ry/node/commit/3768aaaea406dd32db2f74395f6414bcd26dba74).
-An official release that contains this change should be out shortly.
+This module depends on node-v0.1.97 or higher.
 
 Installation is a manual process: use `make` to build the add-on, then manually
 copy `build/default/mpBindings.node` and `lib/msgpack.js` it to wherever your
