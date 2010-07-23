@@ -38,4 +38,5 @@ tags:
 			ctags -L - -a
 
 clean:
+	cd deps/msgpack && (make distclean || true)
 	rm -fr deps/msgpack/dist build
