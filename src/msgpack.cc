@@ -173,6 +173,12 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
             Local<Value> v = a->Get(i);
             v8_to_msgpack(v, &mo->via.array.ptr[i], mz, mc);
         }
+    } else if (Buffer::HasInstance(v8obj)) {
+        Buffer *buf = ObjectWrap::Unwrap<Buffer>(v8obj->ToObject());
+
+        mo->type = MSGPACK_OBJECT_RAW;
+        mo->via.raw.size = buf->length();
+        mo->via.raw.ptr = buf->data();
     } else {
         Local<Object> o = v8obj->ToObject();
         Local<Array> a = o->GetPropertyNames();
