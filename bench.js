@@ -11,14 +11,32 @@ for (var i = 0; i < 500000; i++) {
     DATA.push(JSON.parse(JSON.stringify(DATA_TEMPLATE)));
 }
 
-var testJSON = function(d) {
-    var d = JSON.stringify(d)
-    JSON.parse(d);
-};
+while (true) {
+    var now = Date.now();
+    var mpBuf;
+    DATA.forEach(function(d) {
+        mpBuf = msgpack.pack(d);
+    });
+    console.log('msgpack pack:   ' + (Date.now() - now) + ' ms');
 
-var testMP = function(d) {
-    var d = msgpack.pack(d);
-    msgpack.unpack(d);
-};
+    var now = Date.now();
+    DATA.forEach(function(d) {
+        msgpack.unpack(mpBuf);
+    });
+    console.log('msgpack unpack: ' + (Date.now() - now) + ' ms');
 
-DATA.forEach(testMP);
+    now = Date.now();
+    var jsonStr;
+    DATA.forEach(function(d) {
+        jsonStr = JSON.stringify(d);
+    });
+    console.log('json    pack:   ' + (Date.now() - now) + ' ms');
+
+    now = Date.now();
+    DATA.forEach(function(d) {
+        JSON.parse(jsonStr);
+    });
+    console.log('json    unpack: ' + (Date.now() - now) + ' ms');
+
+    console.log();
+}
