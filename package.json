@@ -1,0 +1,25 @@
+{
+  "name": "msgpack",
+	"description": "A space-efficient object serialization library for node.js",
+  "version": "0.1.2",
+	"homepage": "https://github.com/pgriess/node-msgpack",
+	"author": "Peter Griess <pg@std.in>",
+	"contributors": [
+		"Tom Taylor <tom@tomtaylor.co.uk> (http://tomtaylor.co.uk)"
+	],
+  "main": "./lib/msgpack",
+  "directories": {
+    "lib": "lib"
+  },
+  "engines": {
+    "node": ">=0.1.97"
+  },
+	"scripts": {
+		"preinstall": "make",
+		"preuninstall": "make clean"
+	},
+	"bin": {
+		"json2msgpack": "./bin/json2msgpack",
+		"msgpack2json": "./bin/msgpack2json"
+	}
+}
