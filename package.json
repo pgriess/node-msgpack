@@ -7,6 +7,10 @@
 	"contributors": [
 		"Tom Taylor <tom@tomtaylor.co.uk> (http://tomtaylor.co.uk)"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pgriess/node-msgpack.git"
+	},
   "main": "./lib/msgpack",
   "directories": {
     "lib": "lib"

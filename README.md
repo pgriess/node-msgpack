@@ -112,12 +112,19 @@ stdin and writing to stdout.
 
 ### Building and installation
 
-This module depends on node-v0.1.97 or higher.
+There are two ways to install msgpack.
 
-Installation is a manual process: use `make` to build the add-on, then manually
-copy `build/default/mpBindings.node` and `lib/msgpack.js` it to wherever your
-NodeJS installation will look for it (or add the build directory to your
-`$NODE_PATH`).
+## npm
+
+		npm install msgpack
+
+This should build and install msgpack for you. Then just `require('msgpack')`.
+
+## Manually
+
+Use `make` to build the add-on, then manually copy `build/default/mpBindings.node` 
+and `lib/msgpack.js` it to wherever your node.js installation will look for it (or
+add the build directory to your `$NODE_PATH`).
 
     % ls
     LICENSE  Makefile  README.md  deps/  src/  tags  test.js
