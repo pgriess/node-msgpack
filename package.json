@@ -1,7 +1,7 @@
 {
   "name": "msgpack",
 	"description": "A space-efficient object serialization library for node.js",
-  "version": "0.1.2",
+  "version": "0.1.3",
 	"homepage": "https://github.com/pgriess/node-msgpack",
 	"author": "Peter Griess <pg@std.in>",
 	"contributors": [
