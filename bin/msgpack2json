@@ -1,4 +1,4 @@
-#!/bin/env node
+#!/usr/bin/env node
 // Read MessagePack data from stdin and write JSON data to stdout.
 
 var msgpack = require('msgpack');
