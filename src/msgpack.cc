@@ -176,6 +176,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
     } else if (Buffer::HasInstance(v8obj)) {
         Local<Object> buf = v8obj->ToObject();
 
+
         mo->type = MSGPACK_OBJECT_RAW;
         mo->via.raw.size = Buffer::Length(buf);
         mo->via.raw.ptr = Buffer::Data(buf);
@@ -311,7 +312,7 @@ unpack(const Arguments &args) {
             String::New("First argument must be a Buffer")));
     }
 
-    Buffer *buf = ObjectWrap::Unwrap<Buffer>(args[0]->ToObject());
+    Local<Object> buf = args[0]->ToObject();
 
     MsgpackZone mz;
     msgpack_object mo;
