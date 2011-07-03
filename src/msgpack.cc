@@ -11,6 +11,7 @@ using namespace v8;
 using namespace node;
 
 static Persistent<FunctionTemplate> msgpack_unpack_template;
+static Persistent<FunctionTemplate> msgpack_unpack_buffer_template;
 
 // An exception class that wraps a textual message
 class MsgpackException {
@@ -255,6 +256,66 @@ msgpack_to_v8(msgpack_object *mo) {
     }
 }
 
+// Convert a MessagePack object to a V8 object.
+//
+// This method is recursive. It will probably blow out the stack on objects
+// with extremely deep nesting.
+static Handle<Value>
+msgpack_to_v8_buffer(msgpack_object *mo) {
+	HandleScope scope;
+	Buffer *bp;
+	
+    switch (mo->type) {
+    case MSGPACK_OBJECT_NIL:
+        return Null();
+
+    case MSGPACK_OBJECT_BOOLEAN:
+        return (mo->via.boolean) ?
+            True() :
+            False();
+
+    case MSGPACK_OBJECT_POSITIVE_INTEGER:
+        return Integer::NewFromUnsigned(mo->via.u64);
+
+    case MSGPACK_OBJECT_NEGATIVE_INTEGER:
+        return Integer::New(mo->via.i64);
+
+    case MSGPACK_OBJECT_DOUBLE:
+        return Number::New(mo->via.dec);
+
+    case MSGPACK_OBJECT_ARRAY: {
+        Local<Array> a = Array::New(mo->via.array.size);
+
+        for (uint32_t i = 0; i < mo->via.array.size; i++) {
+            a->Set(i, msgpack_to_v8_buffer(&mo->via.array.ptr[i]));
+        }
+
+        return a;
+    }
+
+    case MSGPACK_OBJECT_RAW:
+	    bp = Buffer::New(mo->via.raw.size);
+	    memcpy(Buffer::Data(bp), mo->via.raw.ptr, mo->via.raw.size);
+	    return scope.Close(bp->handle_);
+
+    case MSGPACK_OBJECT_MAP: {
+        Local<Object> o = Object::New();
+
+        for (uint32_t i = 0; i < mo->via.map.size; i++) {
+            o->Set(
+                msgpack_to_v8_buffer(&mo->via.map.ptr[i].key),
+                msgpack_to_v8_buffer(&mo->via.map.ptr[i].val)
+            );
+        }
+
+        return o;
+    }
+
+    default:
+        throw MsgpackException("Encountered unknown MesssagePack object type");
+    }
+}
+
 // var buf = msgpack.pack(obj[, obj ...]);
 //
 // Returns a Buffer object representing the serialized state of the provided
@@ -340,6 +401,51 @@ unpack(const Arguments &args) {
     }
 }
 
+// var o = msgpack.unpack_buffer(buf);
+//
+// Return the JavaScript object resulting from unpacking the contents of the
+// specified buffer. If the buffer does not contain a complete object, the
+// undefined value is returned.
+static Handle<Value>
+unpack_buffer(const Arguments &args) {
+    static Persistent<String> msgpack_bytes_remaining_symbol = 
+        NODE_PSYMBOL("bytes_remaining");
+
+    HandleScope scope;
+
+    if (args.Length() < 0 || !Buffer::HasInstance(args[0])) {
+        return ThrowException(Exception::TypeError(
+            String::New("First argument must be a Buffer")));
+    }
+
+    Local<Object> buf = args[0]->ToObject();
+
+    MsgpackZone mz;
+    msgpack_object mo;
+    size_t off = 0;
+
+    switch (msgpack_unpack(Buffer::Data(buf), Buffer::Length(buf), &off, &mz._mz, &mo)) {
+    case MSGPACK_UNPACK_EXTRA_BYTES:
+    case MSGPACK_UNPACK_SUCCESS:
+        try {
+            msgpack_unpack_buffer_template->GetFunction()->Set(
+                msgpack_bytes_remaining_symbol,
+                Integer::New(Buffer::Length(buf) - off)
+            );
+            return scope.Close(msgpack_to_v8_buffer(&mo));
+        } catch (MsgpackException e) {
+            return ThrowException(e.getThrownException());
+        }
+    
+    case MSGPACK_UNPACK_CONTINUE:
+        return scope.Close(Undefined());
+
+    default:
+        return ThrowException(Exception::Error(
+            String::New("Error de-serializing object")));
+    }
+}
+
 extern "C" void
 init(Handle<Object> target) {
     HandleScope scope;
@@ -354,6 +460,14 @@ init(Handle<Object> target) {
     target->Set(
         String::NewSymbol("unpack"),
         msgpack_unpack_template->GetFunction()
+    );
+
+    msgpack_unpack_buffer_template = Persistent<FunctionTemplate>::New(
+        FunctionTemplate::New(unpack_buffer)
+    );
+    target->Set(
+        String::NewSymbol("unpack_buffer"),
+        msgpack_unpack_buffer_template->GetFunction()
     );
 }
 
