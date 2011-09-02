@@ -141,18 +141,15 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
     } else if (v8obj->IsBoolean()) {
         mo->type = MSGPACK_OBJECT_BOOLEAN;
         mo->via.boolean = v8obj->BooleanValue();
+    } else if (v8obj->IsInt32()) {
+        mo->type = MSGPACK_OBJECT_NEGATIVE_INTEGER;
+        mo->via.i64 = v8obj->IntegerValue();
+    } else if (v8obj->IsUint32()) {
+        mo->type = MSGPACK_OBJECT_POSITIVE_INTEGER;
+        mo->via.u64 = v8obj->IntegerValue();
     } else if (v8obj->IsNumber()) {
-        double d = v8obj->NumberValue();
-        if (trunc(d) != d) {
-            mo->type = MSGPACK_OBJECT_DOUBLE;
-            mo->via.dec = d;
-        } else if (d > 0) {
-            mo->type = MSGPACK_OBJECT_POSITIVE_INTEGER;
-            mo->via.u64 = d;
-        } else {
-            mo->type = MSGPACK_OBJECT_NEGATIVE_INTEGER;
-            mo->via.i64 = d;
-        }
+        mo->type = MSGPACK_OBJECT_DOUBLE;
+        mo->via.dec = v8obj->NumberValue();
     } else if (v8obj->IsString()) {
         mo->type = MSGPACK_OBJECT_RAW;
         mo->via.raw.size = DecodeBytes(v8obj, UTF8);

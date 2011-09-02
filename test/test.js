@@ -20,6 +20,7 @@ var testCircular = function(v) {
 }
 
 testEqual('abcdef');
+testEqual(177347645375);
 testEqual(123);
 testEqual(null);
 testEqual(-1243.111);
