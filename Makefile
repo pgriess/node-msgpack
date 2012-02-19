@@ -5,8 +5,8 @@ CFLAGS ?= -g -Wall
 CXXFLAGS ?= -g -Wall
 
 # We need to build position-independent code regardless of platform
-CFLAGS += -fPIC
-CXXFLAGS += -fPIC
+# CFLAGS += -fPIC
+# CXXFLAGS += -fPIC
 
 # These variables are respected by waf if we export them
 export CFLAGS CXXFLAGS
