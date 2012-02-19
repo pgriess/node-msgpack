@@ -2938,10 +2938,10 @@ ac_config_headers="$ac_config_headers config.h"
 
 
 
-CFLAGS="-O4 -Wall $CFLAGS"
+CFLAGS="-O3 -Wall $CFLAGS"
 
 
-CXXFLAGS="-O4 -Wall $CXXFLAGS"
+CXXFLAGS="-O3 -Wall $CXXFLAGS"
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
