@@ -27,12 +27,6 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
-/* Define to 1 if you have the <tr1/unordered_map> header file. */
-#undef HAVE_TR1_UNORDERED_MAP
-
-/* Define to 1 if you have the <tr1/unordered_set> header file. */
-#undef HAVE_TR1_UNORDERED_SET
-
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 

@@ -33,8 +33,11 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-check_PROGRAMS = zone$(EXEEXT) pack_unpack$(EXEEXT) streaming$(EXEEXT) \
-	object$(EXEEXT) convert$(EXEEXT) buffer$(EXEEXT)
+check_PROGRAMS = zone$(EXEEXT) pack_unpack$(EXEEXT) \
+	pack_unpack_c$(EXEEXT) streaming$(EXEEXT) streaming_c$(EXEEXT) \
+	object$(EXEEXT) convert$(EXEEXT) buffer$(EXEEXT) \
+	cases$(EXEEXT) fixint$(EXEEXT) fixint_c$(EXEEXT) \
+	version$(EXEEXT) msgpackc_test$(EXEEXT) msgpack_test$(EXEEXT)
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -48,18 +51,42 @@ CONFIG_CLEAN_VPATH_FILES =
 am_buffer_OBJECTS = buffer.$(OBJEXT)
 buffer_OBJECTS = $(am_buffer_OBJECTS)
 buffer_DEPENDENCIES =
+am_cases_OBJECTS = cases.$(OBJEXT)
+cases_OBJECTS = $(am_cases_OBJECTS)
+cases_LDADD = $(LDADD)
 am_convert_OBJECTS = convert.$(OBJEXT)
 convert_OBJECTS = $(am_convert_OBJECTS)
 convert_LDADD = $(LDADD)
+am_fixint_OBJECTS = fixint.$(OBJEXT)
+fixint_OBJECTS = $(am_fixint_OBJECTS)
+fixint_LDADD = $(LDADD)
+am_fixint_c_OBJECTS = fixint_c.$(OBJEXT)
+fixint_c_OBJECTS = $(am_fixint_c_OBJECTS)
+fixint_c_LDADD = $(LDADD)
+am_msgpack_test_OBJECTS = msgpack_test.$(OBJEXT)
+msgpack_test_OBJECTS = $(am_msgpack_test_OBJECTS)
+msgpack_test_LDADD = $(LDADD)
+am_msgpackc_test_OBJECTS = msgpackc_test.$(OBJEXT)
+msgpackc_test_OBJECTS = $(am_msgpackc_test_OBJECTS)
+msgpackc_test_LDADD = $(LDADD)
 am_object_OBJECTS = object.$(OBJEXT)
 object_OBJECTS = $(am_object_OBJECTS)
 object_LDADD = $(LDADD)
 am_pack_unpack_OBJECTS = pack_unpack.$(OBJEXT)
 pack_unpack_OBJECTS = $(am_pack_unpack_OBJECTS)
 pack_unpack_LDADD = $(LDADD)
+am_pack_unpack_c_OBJECTS = pack_unpack_c.$(OBJEXT)
+pack_unpack_c_OBJECTS = $(am_pack_unpack_c_OBJECTS)
+pack_unpack_c_LDADD = $(LDADD)
 am_streaming_OBJECTS = streaming.$(OBJEXT)
 streaming_OBJECTS = $(am_streaming_OBJECTS)
 streaming_LDADD = $(LDADD)
+am_streaming_c_OBJECTS = streaming_c.$(OBJEXT)
+streaming_c_OBJECTS = $(am_streaming_c_OBJECTS)
+streaming_c_LDADD = $(LDADD)
+am_version_OBJECTS = version.$(OBJEXT)
+version_OBJECTS = $(am_version_OBJECTS)
+version_LDADD = $(LDADD)
 am_zone_OBJECTS = zone.$(OBJEXT)
 zone_OBJECTS = $(am_zone_OBJECTS)
 zone_LDADD = $(LDADD)
@@ -76,10 +103,18 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(buffer_SOURCES) $(convert_SOURCES) $(object_SOURCES) \
-	$(pack_unpack_SOURCES) $(streaming_SOURCES) $(zone_SOURCES)
-DIST_SOURCES = $(buffer_SOURCES) $(convert_SOURCES) $(object_SOURCES) \
-	$(pack_unpack_SOURCES) $(streaming_SOURCES) $(zone_SOURCES)
+SOURCES = $(buffer_SOURCES) $(cases_SOURCES) $(convert_SOURCES) \
+	$(fixint_SOURCES) $(fixint_c_SOURCES) $(msgpack_test_SOURCES) \
+	$(msgpackc_test_SOURCES) $(object_SOURCES) \
+	$(pack_unpack_SOURCES) $(pack_unpack_c_SOURCES) \
+	$(streaming_SOURCES) $(streaming_c_SOURCES) $(version_SOURCES) \
+	$(zone_SOURCES)
+DIST_SOURCES = $(buffer_SOURCES) $(cases_SOURCES) $(convert_SOURCES) \
+	$(fixint_SOURCES) $(fixint_c_SOURCES) $(msgpack_test_SOURCES) \
+	$(msgpackc_test_SOURCES) $(object_SOURCES) \
+	$(pack_unpack_SOURCES) $(pack_unpack_c_SOURCES) \
+	$(streaming_SOURCES) $(streaming_c_SOURCES) $(version_SOURCES) \
+	$(zone_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 am__tty_colors = \
@@ -151,6 +186,8 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
+VERSION_MAJOR = @VERSION_MAJOR@
+VERSION_MINOR = @VERSION_MINOR@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -204,21 +241,30 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = -I..
-AM_C_CPPFLAGS = -I..
-AM_LDFLAGS = ../libmsgpack.la -lgtest_main
+AM_CPPFLAGS = -I../src
+AM_C_CPPFLAGS = -I../src
+AM_LDFLAGS = ../src/libmsgpack.la -lgtest_main -pthread
 TESTS = $(check_PROGRAMS)
 zone_SOURCES = zone.cc
 pack_unpack_SOURCES = pack_unpack.cc
+pack_unpack_c_SOURCES = pack_unpack_c.cc
 streaming_SOURCES = streaming.cc
+streaming_c_SOURCES = streaming_c.cc
 object_SOURCES = object.cc
 convert_SOURCES = convert.cc
 buffer_SOURCES = buffer.cc
 buffer_LDADD = -lz
+cases_SOURCES = cases.cc
+fixint_SOURCES = fixint.cc
+fixint_c_SOURCES = fixint_c.cc
+version_SOURCES = version.cc
+msgpackc_test_SOURCES = msgpackc_test.cpp
+msgpack_test_SOURCES = msgpack_test.cpp
+EXTRA_DIST = cases.mpac cases_compact.mpac
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cc .lo .o .obj
+.SUFFIXES: .cc .cpp .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -261,18 +307,42 @@ clean-checkPROGRAMS:
 buffer$(EXEEXT): $(buffer_OBJECTS) $(buffer_DEPENDENCIES) 
 	@rm -f buffer$(EXEEXT)
 	$(CXXLINK) $(buffer_OBJECTS) $(buffer_LDADD) $(LIBS)
+cases$(EXEEXT): $(cases_OBJECTS) $(cases_DEPENDENCIES) 
+	@rm -f cases$(EXEEXT)
+	$(CXXLINK) $(cases_OBJECTS) $(cases_LDADD) $(LIBS)
 convert$(EXEEXT): $(convert_OBJECTS) $(convert_DEPENDENCIES) 
 	@rm -f convert$(EXEEXT)
 	$(CXXLINK) $(convert_OBJECTS) $(convert_LDADD) $(LIBS)
+fixint$(EXEEXT): $(fixint_OBJECTS) $(fixint_DEPENDENCIES) 
+	@rm -f fixint$(EXEEXT)
+	$(CXXLINK) $(fixint_OBJECTS) $(fixint_LDADD) $(LIBS)
+fixint_c$(EXEEXT): $(fixint_c_OBJECTS) $(fixint_c_DEPENDENCIES) 
+	@rm -f fixint_c$(EXEEXT)
+	$(CXXLINK) $(fixint_c_OBJECTS) $(fixint_c_LDADD) $(LIBS)
+msgpack_test$(EXEEXT): $(msgpack_test_OBJECTS) $(msgpack_test_DEPENDENCIES) 
+	@rm -f msgpack_test$(EXEEXT)
+	$(CXXLINK) $(msgpack_test_OBJECTS) $(msgpack_test_LDADD) $(LIBS)
+msgpackc_test$(EXEEXT): $(msgpackc_test_OBJECTS) $(msgpackc_test_DEPENDENCIES) 
+	@rm -f msgpackc_test$(EXEEXT)
+	$(CXXLINK) $(msgpackc_test_OBJECTS) $(msgpackc_test_LDADD) $(LIBS)
 object$(EXEEXT): $(object_OBJECTS) $(object_DEPENDENCIES) 
 	@rm -f object$(EXEEXT)
 	$(CXXLINK) $(object_OBJECTS) $(object_LDADD) $(LIBS)
 pack_unpack$(EXEEXT): $(pack_unpack_OBJECTS) $(pack_unpack_DEPENDENCIES) 
 	@rm -f pack_unpack$(EXEEXT)
 	$(CXXLINK) $(pack_unpack_OBJECTS) $(pack_unpack_LDADD) $(LIBS)
+pack_unpack_c$(EXEEXT): $(pack_unpack_c_OBJECTS) $(pack_unpack_c_DEPENDENCIES) 
+	@rm -f pack_unpack_c$(EXEEXT)
+	$(CXXLINK) $(pack_unpack_c_OBJECTS) $(pack_unpack_c_LDADD) $(LIBS)
 streaming$(EXEEXT): $(streaming_OBJECTS) $(streaming_DEPENDENCIES) 
 	@rm -f streaming$(EXEEXT)
 	$(CXXLINK) $(streaming_OBJECTS) $(streaming_LDADD) $(LIBS)
+streaming_c$(EXEEXT): $(streaming_c_OBJECTS) $(streaming_c_DEPENDENCIES) 
+	@rm -f streaming_c$(EXEEXT)
+	$(CXXLINK) $(streaming_c_OBJECTS) $(streaming_c_LDADD) $(LIBS)
+version$(EXEEXT): $(version_OBJECTS) $(version_DEPENDENCIES) 
+	@rm -f version$(EXEEXT)
+	$(CXXLINK) $(version_OBJECTS) $(version_LDADD) $(LIBS)
 zone$(EXEEXT): $(zone_OBJECTS) $(zone_DEPENDENCIES) 
 	@rm -f zone$(EXEEXT)
 	$(CXXLINK) $(zone_OBJECTS) $(zone_LDADD) $(LIBS)
@@ -284,10 +354,18 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/buffer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cases.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/convert.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fixint.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fixint_c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/msgpack_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/msgpackc_test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/object.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pack_unpack.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pack_unpack_c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/streaming.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/streaming_c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/version.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zone.Po@am__quote@
 
 .cc.o:
@@ -305,6 +383,27 @@ distclean-compile:
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 .cc.lo:
+@am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
+
+.cpp.o:
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
+
+.cpp.obj:
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.cpp.lo:
 @am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
