@@ -91,3 +91,5 @@ msgpack_test_LDADD = libmsgpack.la -lgtest_main
 
 TESTS = $(check_PROGRAMS)
 
+ACLOCAL_AMFLAGS = -I m4
+
