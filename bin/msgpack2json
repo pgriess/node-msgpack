@@ -3,11 +3,11 @@
 
 var msgpack = require('msgpack');
 var net = require('net');
-var sys = require('sys');
+var util = require('util');
 
 var s = new net.Stream(0);
 s.addListener('data', function(b) {
-    sys.puts(JSON.stringify(msgpack.unpack(b)));
+    util.puts(JSON.stringify(msgpack.unpack(b)));
 });
 s.resume();
 
