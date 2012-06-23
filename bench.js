@@ -2,7 +2,7 @@
 
 var assert = require('assert');
 var msgpack = require('msgpack');
-var sys = require('sys');
+var util = require('util');
 
 var DATA_TEMPLATE = {'abcdef' : 1, 'qqq' : 13, '19' : [1, 2, 3, 4]};
 var DATA = [];
