@@ -1,7 +1,7 @@
 /*
  * MessagePack for C memory pool implementation
  *
- * Copyright (C) 2008-2009 FURUHASHI Sadayuki
+ * Copyright (C) 2008-2010 FURUHASHI Sadayuki
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,12 +18,18 @@
 #ifndef MSGPACK_ZONE_H__
 #define MSGPACK_ZONE_H__
 
-#include "msgpack/sysdep.h"
+#include "sysdep.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
+/**
+ * @defgroup msgpack_zone Memory zone
+ * @ingroup msgpack
+ * @{
+ */
 
 typedef struct msgpack_zone_finalizer {
 	void (*func)(void* data);
@@ -67,10 +73,13 @@ static inline void* msgpack_zone_malloc_no_align(msgpack_zone* zone, size_t size
 static inline bool msgpack_zone_push_finalizer(msgpack_zone* zone,
 		void (*func)(void* data), void* data);
 
+static inline void msgpack_zone_swap(msgpack_zone* a, msgpack_zone* b);
+
 bool msgpack_zone_is_empty(msgpack_zone* zone);
 
 void msgpack_zone_clear(msgpack_zone* zone);
 
+/** @} */
 
 
 #ifndef MSGPACK_ZONE_ALIGN
@@ -120,6 +129,13 @@ bool msgpack_zone_push_finalizer(msgpack_zone* zone,
 	++fa->tail;
 
 	return true;
+}
+
+void msgpack_zone_swap(msgpack_zone* a, msgpack_zone* b)
+{
+	msgpack_zone tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
 

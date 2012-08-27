@@ -18,7 +18,7 @@
 #ifndef MSGPACK_VREFBUFFER_HPP__
 #define MSGPACK_VREFBUFFER_HPP__
 
-#include "msgpack/vrefbuffer.h"
+#include "vrefbuffer.h"
 #include <stdexcept>
 
 namespace msgpack {
@@ -76,6 +76,11 @@ public:
 		if(msgpack_vrefbuffer_migrate(this, to) < 0) {
 			throw std::bad_alloc();
 		}
+	}
+
+	void clear()
+	{
+		msgpack_vrefbuffer_clear(this);
 	}
 
 private:

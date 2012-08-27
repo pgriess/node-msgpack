@@ -19,6 +19,10 @@
 #include "msgpack/unpack_define.h"
 #include <stdlib.h>
 
+#ifdef _msgpack_atomic_counter_header
+#include _msgpack_atomic_counter_header
+#endif
+
 
 typedef struct {
 	msgpack_zone* z;
@@ -323,7 +327,7 @@ msgpack_object msgpack_unpacker_data(msgpack_unpacker* mpac)
 msgpack_zone* msgpack_unpacker_release_zone(msgpack_unpacker* mpac)
 {
 	if(!msgpack_unpacker_flush_zone(mpac)) {
-		return false;
+		return NULL;
 	}
 
 	msgpack_zone* r = msgpack_zone_new(MSGPACK_ZONE_CHUNK_SIZE);
@@ -333,6 +337,7 @@ msgpack_zone* msgpack_unpacker_release_zone(msgpack_unpacker* mpac)
 
 	msgpack_zone* old = mpac->z;
 	mpac->z = r;
+	CTX_CAST(mpac->ctx)->user.z = mpac->z;
 
 	return old;
 }
@@ -363,19 +368,45 @@ void msgpack_unpacker_reset(msgpack_unpacker* mpac)
 	mpac->parsed = 0;
 }
 
+bool msgpack_unpacker_next(msgpack_unpacker* mpac, msgpack_unpacked* result)
+{
+	if(result->zone != NULL) {
+		msgpack_zone_free(result->zone);
+	}
+
+	int ret = msgpack_unpacker_execute(mpac);
+
+	if(ret <= 0) {
+		result->zone = NULL;
+		memset(&result->data, 0, sizeof(msgpack_object));
+		return false;
+	}
+
+	result->zone = msgpack_unpacker_release_zone(mpac);
+	result->data = msgpack_unpacker_data(mpac);
+	msgpack_unpacker_reset(mpac);
+
+	return true;
+}
+
 
 msgpack_unpack_return
 msgpack_unpack(const char* data, size_t len, size_t* off,
-		msgpack_zone* z, msgpack_object* result)
+		msgpack_zone* result_zone, msgpack_object* result)
 {
+	size_t noff = 0;
+	if(off != NULL) { noff = *off; }
+
+	if(len <= noff) {
+		// FIXME
+		return MSGPACK_UNPACK_CONTINUE;
+	}
+
 	template_context ctx;
 	template_init(&ctx);
 
-	ctx.user.z = z;
+	ctx.user.z = result_zone;
 	ctx.user.referenced = false;
-
-	size_t noff = 0;
-	if(off != NULL) { noff = *off; }
 
 	int e = template_execute(&ctx, data, len, &noff);
 	if(e < 0) {
@@ -395,5 +426,39 @@ msgpack_unpack(const char* data, size_t len, size_t* off,
 	}
 
 	return MSGPACK_UNPACK_SUCCESS;
+}
+
+bool msgpack_unpack_next(msgpack_unpacked* result,
+		const char* data, size_t len, size_t* off)
+{
+	msgpack_unpacked_destroy(result);
+
+	size_t noff = 0;
+	if(off != NULL) { noff = *off; }
+
+	if(len <= noff) {
+		return false;
+	}
+
+	msgpack_zone* z = msgpack_zone_new(MSGPACK_ZONE_CHUNK_SIZE);
+
+	template_context ctx;
+	template_init(&ctx);
+
+	ctx.user.z = z;
+	ctx.user.referenced = false;
+
+	int e = template_execute(&ctx, data, len, &noff);
+	if(e <= 0) {
+		msgpack_zone_free(z);
+		return false;
+	}
+
+	if(off != NULL) { *off = noff; }
+
+	result->zone = z;
+	result->data = template_data(&ctx);
+
+	return true;
 }
 

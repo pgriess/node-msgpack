@@ -10,7 +10,7 @@
 					'unpack.c',
 					'vrefbuffer.c',
 					'zone.c',
-					
+					'version.c'					
 				],
 				'cflags_cc': [
 					'-Wall',

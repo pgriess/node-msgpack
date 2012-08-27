@@ -1,7 +1,7 @@
 //
 // MessagePack for C++ memory pool
 //
-// Copyright (C) 2008-2009 FURUHASHI Sadayuki
+// Copyright (C) 2008-2010 FURUHASHI Sadayuki
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 #ifndef MSGPACK_ZONE_HPP__
 #define MSGPACK_ZONE_HPP__
 
-#include "msgpack/zone.h"
+#include "zone.h"
 #include <cstdlib>
 #include <memory>
 #include <vector>
@@ -42,6 +42,8 @@ public:
 	void push_finalizer(std::auto_ptr<T> obj);
 
 	void clear();
+
+	void swap(zone& o);
 
 	
 	template <typename T>
@@ -154,6 +156,11 @@ inline void zone::push_finalizer(std::auto_ptr<T> obj)
 inline void zone::clear()
 {
 	msgpack_zone_clear(this);
+}
+
+inline void zone::swap(zone& o)
+{
+	msgpack_zone_swap(this, &o);
 }
 
 template <typename T>
