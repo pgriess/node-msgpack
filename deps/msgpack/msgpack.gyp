@@ -13,10 +13,23 @@
 					
 				],
 				'cflags_cc': [
-					'-fexceptions',
 					'-Wall',
 					'-O3'
 				],
+				'cflags': [
+					'-Wall',
+					'-O3'
+				],
+				'cflags!': ['-fno-exceptions'],
+				'cflags_cc!': ['-fno-exceptions'],
+				'conditions': [
+					['OS=="mac"', {
+						'xcode-settings': {
+							'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
+						}
+
+					}]
+				]
 			},
 
 	]
