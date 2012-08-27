@@ -142,7 +142,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
         mo->via.boolean = v8obj->BooleanValue();
     } else if (v8obj->IsNumber()) {
         double d = v8obj->NumberValue();
-        if (trunc(d) != d) {
+        if (static_cast<double>(static_cast<int>(d)) != d) {
             mo->type = MSGPACK_OBJECT_DOUBLE;
             mo->via.dec = d;
         } else if (d > 0) {
