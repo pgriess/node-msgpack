@@ -357,4 +357,5 @@ init(Handle<Object> target) {
     );
 }
 
+NODE_MODULE(msgpackBinding, init);
 // vim:ts=4 sw=4 et

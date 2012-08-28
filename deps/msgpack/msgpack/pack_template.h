@@ -743,7 +743,7 @@ msgpack_pack_inline_func(_raw)(msgpack_pack_user x, size_t l)
 
 msgpack_pack_inline_func(_raw_body)(msgpack_pack_user x, const void* b, size_t l)
 {
-	msgpack_pack_append_buffer(x, (const unsigned char*)b, static_cast<unsigned int>(l));
+	msgpack_pack_append_buffer(x, (const unsigned char*)b, (unsigned int)(l));
 }
 
 #undef msgpack_pack_inline_func
