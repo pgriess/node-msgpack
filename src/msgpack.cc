@@ -142,19 +142,19 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
         mo->via.boolean = v8obj->BooleanValue();
     } else if (v8obj->IsNumber()) {
         double d = v8obj->NumberValue();
-        if (trunc(d) != d) {
+        if (static_cast<double>(static_cast<int>(d)) != d) {
             mo->type = MSGPACK_OBJECT_DOUBLE;
             mo->via.dec = d;
         } else if (d > 0) {
             mo->type = MSGPACK_OBJECT_POSITIVE_INTEGER;
-            mo->via.u64 = d;
+            mo->via.u64 = static_cast<uint64_t>(d);
         } else {
             mo->type = MSGPACK_OBJECT_NEGATIVE_INTEGER;
-            mo->via.i64 = d;
+            mo->via.i64 = static_cast<int64_t>(d);
         }
     } else if (v8obj->IsString()) {
         mo->type = MSGPACK_OBJECT_RAW;
-        mo->via.raw.size = DecodeBytes(v8obj, UTF8);
+        mo->via.raw.size = static_cast<uint32_t>(DecodeBytes(v8obj, UTF8));
         mo->via.raw.ptr = (char*) msgpack_zone_malloc(mz, mo->via.raw.size);
 
         DecodeWrite((char*) mo->via.raw.ptr, mo->via.raw.size, v8obj, UTF8);
@@ -178,7 +178,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
 
 
         mo->type = MSGPACK_OBJECT_RAW;
-        mo->via.raw.size = Buffer::Length(buf);
+        mo->via.raw.size = static_cast<uint32_t>(Buffer::Length(buf));
         mo->via.raw.ptr = Buffer::Data(buf);
     } else {
         Local<Object> o = v8obj->ToObject();
@@ -216,10 +216,10 @@ msgpack_to_v8(msgpack_object *mo) {
             False();
 
     case MSGPACK_OBJECT_POSITIVE_INTEGER:
-        return Integer::NewFromUnsigned(mo->via.u64);
+        return Integer::NewFromUnsigned(static_cast<uint32_t>(mo->via.u64));
 
     case MSGPACK_OBJECT_NEGATIVE_INTEGER:
-        return Integer::New(mo->via.i64);
+        return Integer::New(static_cast<int32_t>(mo->via.i64));
 
     case MSGPACK_OBJECT_DOUBLE:
         return Number::New(mo->via.dec);
@@ -324,7 +324,7 @@ unpack(const Arguments &args) {
         try {
             msgpack_unpack_template->GetFunction()->Set(
                 msgpack_bytes_remaining_symbol,
-                Integer::New(Buffer::Length(buf) - off)
+                Integer::New(static_cast<int32_t>(Buffer::Length(buf) - off))
             );
             return scope.Close(msgpack_to_v8(&mo));
         } catch (MsgpackException e) {
@@ -357,4 +357,5 @@ init(Handle<Object> target) {
     );
 }
 
+NODE_MODULE(msgpackBinding, init);
 // vim:ts=4 sw=4 et

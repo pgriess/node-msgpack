@@ -18,14 +18,15 @@
 #ifndef MSGPACK_UNPACK_HPP__
 #define MSGPACK_UNPACK_HPP__
 
-#include "msgpack/unpack.h"
-#include "msgpack/object.hpp"
-#include "msgpack/zone.hpp"
+#include "unpack.h"
+#include "object.hpp"
+#include "zone.hpp"
 #include <memory>
 #include <stdexcept>
 
+// backward compatibility
 #ifndef MSGPACK_UNPACKER_DEFAULT_INITIAL_BUFFER_SIZE
-#define MSGPACK_UNPACKER_DEFAULT_INITIAL_BUFFER_SIZE (32*1024)
+#define MSGPACK_UNPACKER_DEFAULT_INITIAL_BUFFER_SIZE MSGPACK_UNPACKER_INIT_BUFFER_SIZE
 #endif
 
 namespace msgpack {
@@ -64,12 +65,12 @@ private:
 
 class unpacker : public msgpack_unpacker {
 public:
-	unpacker(size_t init_buffer_size = MSGPACK_UNPACKER_DEFAULT_INITIAL_BUFFER_SIZE);
+	unpacker(size_t init_buffer_size = MSGPACK_UNPACKER_INIT_BUFFER_SIZE);
 	~unpacker();
 
 public:
 	/*! 1. reserve buffer. at least `size' bytes of capacity will be ready */
-	void reserve_buffer(size_t size);
+	void reserve_buffer(size_t size = MSGPACK_UNPACKER_RESERVE_SIZE);
 
 	/*! 2. read data to the buffer() up to buffer_capacity() bytes */
 	char* buffer();
@@ -160,7 +161,7 @@ private:
 };
 
 
-static bool unpack(unpacked* result,
+static void unpack(unpacked* result,
 		const char* data, size_t len, size_t* offset = NULL);
 
 
@@ -257,17 +258,7 @@ inline object unpacker::data()
 
 inline zone* unpacker::release_zone()
 {
-	if(!msgpack_unpacker_flush_zone(this)) {
-		throw std::bad_alloc();
-	}
-
-	zone* r = new zone();
-
-	msgpack_zone old = *base::z;
-	*base::z = *r;
-	*static_cast<msgpack_zone*>(r) = old;
-
-	return r;
+	return static_cast<msgpack::zone*>(msgpack_unpacker_release_zone(static_cast<msgpack_unpacker*>(this)));
 }
 
 inline void unpacker::reset_zone()
@@ -312,7 +303,7 @@ inline void unpacker::remove_nonparsed_buffer()
 }
 
 
-inline bool unpack(unpacked* result,
+inline void unpack(unpacked* result,
 		const char* data, size_t len, size_t* offset)
 {
 	msgpack::object obj;
@@ -326,12 +317,12 @@ inline bool unpack(unpacked* result,
 	case UNPACK_SUCCESS:
 		result->get() = obj;
 		result->zone() = z;
-		return false;
+		return;
 
 	case UNPACK_EXTRA_BYTES:
 		result->get() = obj;
 		result->zone() = z;
-		return true;
+		return;
 
 	case UNPACK_CONTINUE:
 		throw unpack_error("insufficient bytes");
