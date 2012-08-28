@@ -29,11 +29,24 @@
 
 					}],
 					['OS=="win"', {
-						'msvs_settings': {
-							'VCCLCompilerTool': {
-								'CompileAs': 2
-							}
-						}
+						'configurations': {
+							'Debug': {
+								'msvs_settings': {
+									'VCCLCompilerTool': {
+										'CompileAs': '2',
+										'ExceptionHandling': '1',
+									},
+								},
+							},
+							'Release': {
+								'msvs_settings': {
+									'VCCLCompilerTool': {
+										'CompileAs': '2',
+										'ExceptionHandling': '1',
+									},
+								},
+							},
+						},
 					}]
 				]
 			},
