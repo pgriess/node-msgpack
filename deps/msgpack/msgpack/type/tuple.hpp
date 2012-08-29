@@ -10371,7 +10371,7 @@ type::tuple<A0>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 1) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
 	return v;
 }
 
@@ -10382,8 +10382,8 @@ type::tuple<A0, A1>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 2) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
 	return v;
 }
 
@@ -10394,9 +10394,9 @@ type::tuple<A0, A1, A2>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 3) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
 	return v;
 }
 
@@ -10407,10 +10407,10 @@ type::tuple<A0, A1, A2, A3>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 4) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
 	return v;
 }
 
@@ -10421,11 +10421,11 @@ type::tuple<A0, A1, A2, A3, A4>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 5) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
 	return v;
 }
 
@@ -10436,12 +10436,12 @@ type::tuple<A0, A1, A2, A3, A4, A5>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 6) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
 	return v;
 }
 
@@ -10452,13 +10452,13 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 7) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
 	return v;
 }
 
@@ -10469,14 +10469,14 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 8) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
 	return v;
 }
 
@@ -10487,15 +10487,15 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 9) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
 	return v;
 }
 
@@ -10506,16 +10506,16 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 10) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
 	return v;
 }
 
@@ -10526,17 +10526,17 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 11) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
 	return v;
 }
 
@@ -10547,18 +10547,18 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 12) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
 	return v;
 }
 
@@ -10569,19 +10569,19 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>& operator>> (
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 13) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
 	return v;
 }
 
@@ -10592,20 +10592,20 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13>& operato
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 14) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
 	return v;
 }
 
@@ -10616,21 +10616,21 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14>& op
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 15) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
 	return v;
 }
 
@@ -10641,22 +10641,22 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 16) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
 	return v;
 }
 
@@ -10667,23 +10667,23 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 17) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
 	return v;
 }
 
@@ -10694,24 +10694,24 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 18) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
 	return v;
 }
 
@@ -10722,25 +10722,25 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 19) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
 	return v;
 }
 
@@ -10751,26 +10751,26 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 20) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
 	return v;
 }
 
@@ -10781,27 +10781,27 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 21) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
 	return v;
 }
 
@@ -10812,28 +10812,28 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 22) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
 	return v;
 }
 
@@ -10844,29 +10844,29 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 23) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
 	return v;
 }
 
@@ -10877,30 +10877,30 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 24) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
-	o.via.array.ptr[23].convert<A23>(&v.template get<23>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
+	o.via.array.ptr[23].convert<typename type::tuple_type<A23>::type>(&v.template get<23>());
 	return v;
 }
 
@@ -10911,31 +10911,31 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 25) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
-	o.via.array.ptr[23].convert<A23>(&v.template get<23>());
-	o.via.array.ptr[24].convert<A24>(&v.template get<24>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
+	o.via.array.ptr[23].convert<typename type::tuple_type<A23>::type>(&v.template get<23>());
+	o.via.array.ptr[24].convert<typename type::tuple_type<A24>::type>(&v.template get<24>());
 	return v;
 }
 
@@ -10946,32 +10946,32 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 26) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
-	o.via.array.ptr[23].convert<A23>(&v.template get<23>());
-	o.via.array.ptr[24].convert<A24>(&v.template get<24>());
-	o.via.array.ptr[25].convert<A25>(&v.template get<25>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
+	o.via.array.ptr[23].convert<typename type::tuple_type<A23>::type>(&v.template get<23>());
+	o.via.array.ptr[24].convert<typename type::tuple_type<A24>::type>(&v.template get<24>());
+	o.via.array.ptr[25].convert<typename type::tuple_type<A25>::type>(&v.template get<25>());
 	return v;
 }
 
@@ -10982,33 +10982,33 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 27) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
-	o.via.array.ptr[23].convert<A23>(&v.template get<23>());
-	o.via.array.ptr[24].convert<A24>(&v.template get<24>());
-	o.via.array.ptr[25].convert<A25>(&v.template get<25>());
-	o.via.array.ptr[26].convert<A26>(&v.template get<26>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
+	o.via.array.ptr[23].convert<typename type::tuple_type<A23>::type>(&v.template get<23>());
+	o.via.array.ptr[24].convert<typename type::tuple_type<A24>::type>(&v.template get<24>());
+	o.via.array.ptr[25].convert<typename type::tuple_type<A25>::type>(&v.template get<25>());
+	o.via.array.ptr[26].convert<typename type::tuple_type<A26>::type>(&v.template get<26>());
 	return v;
 }
 
@@ -11019,34 +11019,34 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 28) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
-	o.via.array.ptr[23].convert<A23>(&v.template get<23>());
-	o.via.array.ptr[24].convert<A24>(&v.template get<24>());
-	o.via.array.ptr[25].convert<A25>(&v.template get<25>());
-	o.via.array.ptr[26].convert<A26>(&v.template get<26>());
-	o.via.array.ptr[27].convert<A27>(&v.template get<27>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
+	o.via.array.ptr[23].convert<typename type::tuple_type<A23>::type>(&v.template get<23>());
+	o.via.array.ptr[24].convert<typename type::tuple_type<A24>::type>(&v.template get<24>());
+	o.via.array.ptr[25].convert<typename type::tuple_type<A25>::type>(&v.template get<25>());
+	o.via.array.ptr[26].convert<typename type::tuple_type<A26>::type>(&v.template get<26>());
+	o.via.array.ptr[27].convert<typename type::tuple_type<A27>::type>(&v.template get<27>());
 	return v;
 }
 
@@ -11057,35 +11057,35 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 29) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
-	o.via.array.ptr[23].convert<A23>(&v.template get<23>());
-	o.via.array.ptr[24].convert<A24>(&v.template get<24>());
-	o.via.array.ptr[25].convert<A25>(&v.template get<25>());
-	o.via.array.ptr[26].convert<A26>(&v.template get<26>());
-	o.via.array.ptr[27].convert<A27>(&v.template get<27>());
-	o.via.array.ptr[28].convert<A28>(&v.template get<28>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
+	o.via.array.ptr[23].convert<typename type::tuple_type<A23>::type>(&v.template get<23>());
+	o.via.array.ptr[24].convert<typename type::tuple_type<A24>::type>(&v.template get<24>());
+	o.via.array.ptr[25].convert<typename type::tuple_type<A25>::type>(&v.template get<25>());
+	o.via.array.ptr[26].convert<typename type::tuple_type<A26>::type>(&v.template get<26>());
+	o.via.array.ptr[27].convert<typename type::tuple_type<A27>::type>(&v.template get<27>());
+	o.via.array.ptr[28].convert<typename type::tuple_type<A28>::type>(&v.template get<28>());
 	return v;
 }
 
@@ -11096,36 +11096,36 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 30) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
-	o.via.array.ptr[23].convert<A23>(&v.template get<23>());
-	o.via.array.ptr[24].convert<A24>(&v.template get<24>());
-	o.via.array.ptr[25].convert<A25>(&v.template get<25>());
-	o.via.array.ptr[26].convert<A26>(&v.template get<26>());
-	o.via.array.ptr[27].convert<A27>(&v.template get<27>());
-	o.via.array.ptr[28].convert<A28>(&v.template get<28>());
-	o.via.array.ptr[29].convert<A29>(&v.template get<29>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
+	o.via.array.ptr[23].convert<typename type::tuple_type<A23>::type>(&v.template get<23>());
+	o.via.array.ptr[24].convert<typename type::tuple_type<A24>::type>(&v.template get<24>());
+	o.via.array.ptr[25].convert<typename type::tuple_type<A25>::type>(&v.template get<25>());
+	o.via.array.ptr[26].convert<typename type::tuple_type<A26>::type>(&v.template get<26>());
+	o.via.array.ptr[27].convert<typename type::tuple_type<A27>::type>(&v.template get<27>());
+	o.via.array.ptr[28].convert<typename type::tuple_type<A28>::type>(&v.template get<28>());
+	o.via.array.ptr[29].convert<typename type::tuple_type<A29>::type>(&v.template get<29>());
 	return v;
 }
 
@@ -11136,37 +11136,37 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 31) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
-	o.via.array.ptr[23].convert<A23>(&v.template get<23>());
-	o.via.array.ptr[24].convert<A24>(&v.template get<24>());
-	o.via.array.ptr[25].convert<A25>(&v.template get<25>());
-	o.via.array.ptr[26].convert<A26>(&v.template get<26>());
-	o.via.array.ptr[27].convert<A27>(&v.template get<27>());
-	o.via.array.ptr[28].convert<A28>(&v.template get<28>());
-	o.via.array.ptr[29].convert<A29>(&v.template get<29>());
-	o.via.array.ptr[30].convert<A30>(&v.template get<30>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
+	o.via.array.ptr[23].convert<typename type::tuple_type<A23>::type>(&v.template get<23>());
+	o.via.array.ptr[24].convert<typename type::tuple_type<A24>::type>(&v.template get<24>());
+	o.via.array.ptr[25].convert<typename type::tuple_type<A25>::type>(&v.template get<25>());
+	o.via.array.ptr[26].convert<typename type::tuple_type<A26>::type>(&v.template get<26>());
+	o.via.array.ptr[27].convert<typename type::tuple_type<A27>::type>(&v.template get<27>());
+	o.via.array.ptr[28].convert<typename type::tuple_type<A28>::type>(&v.template get<28>());
+	o.via.array.ptr[29].convert<typename type::tuple_type<A29>::type>(&v.template get<29>());
+	o.via.array.ptr[30].convert<typename type::tuple_type<A30>::type>(&v.template get<30>());
 	return v;
 }
 
@@ -11177,38 +11177,38 @@ type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15
 	if(o.type != type::ARRAY) { throw type_error(); }
 	if(o.via.array.size < 32) { throw type_error(); }
 	
-	o.via.array.ptr[0].convert<A0>(&v.template get<0>());
-	o.via.array.ptr[1].convert<A1>(&v.template get<1>());
-	o.via.array.ptr[2].convert<A2>(&v.template get<2>());
-	o.via.array.ptr[3].convert<A3>(&v.template get<3>());
-	o.via.array.ptr[4].convert<A4>(&v.template get<4>());
-	o.via.array.ptr[5].convert<A5>(&v.template get<5>());
-	o.via.array.ptr[6].convert<A6>(&v.template get<6>());
-	o.via.array.ptr[7].convert<A7>(&v.template get<7>());
-	o.via.array.ptr[8].convert<A8>(&v.template get<8>());
-	o.via.array.ptr[9].convert<A9>(&v.template get<9>());
-	o.via.array.ptr[10].convert<A10>(&v.template get<10>());
-	o.via.array.ptr[11].convert<A11>(&v.template get<11>());
-	o.via.array.ptr[12].convert<A12>(&v.template get<12>());
-	o.via.array.ptr[13].convert<A13>(&v.template get<13>());
-	o.via.array.ptr[14].convert<A14>(&v.template get<14>());
-	o.via.array.ptr[15].convert<A15>(&v.template get<15>());
-	o.via.array.ptr[16].convert<A16>(&v.template get<16>());
-	o.via.array.ptr[17].convert<A17>(&v.template get<17>());
-	o.via.array.ptr[18].convert<A18>(&v.template get<18>());
-	o.via.array.ptr[19].convert<A19>(&v.template get<19>());
-	o.via.array.ptr[20].convert<A20>(&v.template get<20>());
-	o.via.array.ptr[21].convert<A21>(&v.template get<21>());
-	o.via.array.ptr[22].convert<A22>(&v.template get<22>());
-	o.via.array.ptr[23].convert<A23>(&v.template get<23>());
-	o.via.array.ptr[24].convert<A24>(&v.template get<24>());
-	o.via.array.ptr[25].convert<A25>(&v.template get<25>());
-	o.via.array.ptr[26].convert<A26>(&v.template get<26>());
-	o.via.array.ptr[27].convert<A27>(&v.template get<27>());
-	o.via.array.ptr[28].convert<A28>(&v.template get<28>());
-	o.via.array.ptr[29].convert<A29>(&v.template get<29>());
-	o.via.array.ptr[30].convert<A30>(&v.template get<30>());
-	o.via.array.ptr[31].convert<A31>(&v.template get<31>());
+	o.via.array.ptr[0].convert<typename type::tuple_type<A0>::type>(&v.template get<0>());
+	o.via.array.ptr[1].convert<typename type::tuple_type<A1>::type>(&v.template get<1>());
+	o.via.array.ptr[2].convert<typename type::tuple_type<A2>::type>(&v.template get<2>());
+	o.via.array.ptr[3].convert<typename type::tuple_type<A3>::type>(&v.template get<3>());
+	o.via.array.ptr[4].convert<typename type::tuple_type<A4>::type>(&v.template get<4>());
+	o.via.array.ptr[5].convert<typename type::tuple_type<A5>::type>(&v.template get<5>());
+	o.via.array.ptr[6].convert<typename type::tuple_type<A6>::type>(&v.template get<6>());
+	o.via.array.ptr[7].convert<typename type::tuple_type<A7>::type>(&v.template get<7>());
+	o.via.array.ptr[8].convert<typename type::tuple_type<A8>::type>(&v.template get<8>());
+	o.via.array.ptr[9].convert<typename type::tuple_type<A9>::type>(&v.template get<9>());
+	o.via.array.ptr[10].convert<typename type::tuple_type<A10>::type>(&v.template get<10>());
+	o.via.array.ptr[11].convert<typename type::tuple_type<A11>::type>(&v.template get<11>());
+	o.via.array.ptr[12].convert<typename type::tuple_type<A12>::type>(&v.template get<12>());
+	o.via.array.ptr[13].convert<typename type::tuple_type<A13>::type>(&v.template get<13>());
+	o.via.array.ptr[14].convert<typename type::tuple_type<A14>::type>(&v.template get<14>());
+	o.via.array.ptr[15].convert<typename type::tuple_type<A15>::type>(&v.template get<15>());
+	o.via.array.ptr[16].convert<typename type::tuple_type<A16>::type>(&v.template get<16>());
+	o.via.array.ptr[17].convert<typename type::tuple_type<A17>::type>(&v.template get<17>());
+	o.via.array.ptr[18].convert<typename type::tuple_type<A18>::type>(&v.template get<18>());
+	o.via.array.ptr[19].convert<typename type::tuple_type<A19>::type>(&v.template get<19>());
+	o.via.array.ptr[20].convert<typename type::tuple_type<A20>::type>(&v.template get<20>());
+	o.via.array.ptr[21].convert<typename type::tuple_type<A21>::type>(&v.template get<21>());
+	o.via.array.ptr[22].convert<typename type::tuple_type<A22>::type>(&v.template get<22>());
+	o.via.array.ptr[23].convert<typename type::tuple_type<A23>::type>(&v.template get<23>());
+	o.via.array.ptr[24].convert<typename type::tuple_type<A24>::type>(&v.template get<24>());
+	o.via.array.ptr[25].convert<typename type::tuple_type<A25>::type>(&v.template get<25>());
+	o.via.array.ptr[26].convert<typename type::tuple_type<A26>::type>(&v.template get<26>());
+	o.via.array.ptr[27].convert<typename type::tuple_type<A27>::type>(&v.template get<27>());
+	o.via.array.ptr[28].convert<typename type::tuple_type<A28>::type>(&v.template get<28>());
+	o.via.array.ptr[29].convert<typename type::tuple_type<A29>::type>(&v.template get<29>());
+	o.via.array.ptr[30].convert<typename type::tuple_type<A30>::type>(&v.template get<30>());
+	o.via.array.ptr[31].convert<typename type::tuple_type<A31>::type>(&v.template get<31>());
 	return v;
 }
 
@@ -12896,6 +12896,796 @@ inline void operator<< (
 
 
 }  // namespace msgpack
+
+
+//inline std::ostream& operator<< (std::ostream& o, const msgpack::type::tuple<>& v) {
+//  return o << "[]";
+//}
+//
+//template <typename A0>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22, typename A23>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< ", " << v.template get<23>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22, typename A23, typename A24>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< ", " << v.template get<23>()
+//	<< ", " << v.template get<24>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22, typename A23, typename A24, typename A25>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< ", " << v.template get<23>()
+//	<< ", " << v.template get<24>()
+//	<< ", " << v.template get<25>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22, typename A23, typename A24, typename A25, typename A26>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< ", " << v.template get<23>()
+//	<< ", " << v.template get<24>()
+//	<< ", " << v.template get<25>()
+//	<< ", " << v.template get<26>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22, typename A23, typename A24, typename A25, typename A26, typename A27>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26, A27>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< ", " << v.template get<23>()
+//	<< ", " << v.template get<24>()
+//	<< ", " << v.template get<25>()
+//	<< ", " << v.template get<26>()
+//	<< ", " << v.template get<27>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22, typename A23, typename A24, typename A25, typename A26, typename A27, typename A28>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26, A27, A28>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< ", " << v.template get<23>()
+//	<< ", " << v.template get<24>()
+//	<< ", " << v.template get<25>()
+//	<< ", " << v.template get<26>()
+//	<< ", " << v.template get<27>()
+//	<< ", " << v.template get<28>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22, typename A23, typename A24, typename A25, typename A26, typename A27, typename A28, typename A29>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26, A27, A28, A29>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< ", " << v.template get<23>()
+//	<< ", " << v.template get<24>()
+//	<< ", " << v.template get<25>()
+//	<< ", " << v.template get<26>()
+//	<< ", " << v.template get<27>()
+//	<< ", " << v.template get<28>()
+//	<< ", " << v.template get<29>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22, typename A23, typename A24, typename A25, typename A26, typename A27, typename A28, typename A29, typename A30>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26, A27, A28, A29, A30>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< ", " << v.template get<23>()
+//	<< ", " << v.template get<24>()
+//	<< ", " << v.template get<25>()
+//	<< ", " << v.template get<26>()
+//	<< ", " << v.template get<27>()
+//	<< ", " << v.template get<28>()
+//	<< ", " << v.template get<29>()
+//	<< ", " << v.template get<30>()
+//	<< "]";
+//}
+//
+//template <typename A0, typename A1, typename A2, typename A3, typename A4, typename A5, typename A6, typename A7, typename A8, typename A9, typename A10, typename A11, typename A12, typename A13, typename A14, typename A15, typename A16, typename A17, typename A18, typename A19, typename A20, typename A21, typename A22, typename A23, typename A24, typename A25, typename A26, typename A27, typename A28, typename A29, typename A30, typename A31>
+//inline std::ostream& operator<< (std::ostream& o,
+//		const msgpack::type::tuple<A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22, A23, A24, A25, A26, A27, A28, A29, A30, A31>& v) {
+//	return o << "["
+//	
+//	<< v.template get<0>()
+//	<< ", " << v.template get<1>()
+//	<< ", " << v.template get<2>()
+//	<< ", " << v.template get<3>()
+//	<< ", " << v.template get<4>()
+//	<< ", " << v.template get<5>()
+//	<< ", " << v.template get<6>()
+//	<< ", " << v.template get<7>()
+//	<< ", " << v.template get<8>()
+//	<< ", " << v.template get<9>()
+//	<< ", " << v.template get<10>()
+//	<< ", " << v.template get<11>()
+//	<< ", " << v.template get<12>()
+//	<< ", " << v.template get<13>()
+//	<< ", " << v.template get<14>()
+//	<< ", " << v.template get<15>()
+//	<< ", " << v.template get<16>()
+//	<< ", " << v.template get<17>()
+//	<< ", " << v.template get<18>()
+//	<< ", " << v.template get<19>()
+//	<< ", " << v.template get<20>()
+//	<< ", " << v.template get<21>()
+//	<< ", " << v.template get<22>()
+//	<< ", " << v.template get<23>()
+//	<< ", " << v.template get<24>()
+//	<< ", " << v.template get<25>()
+//	<< ", " << v.template get<26>()
+//	<< ", " << v.template get<27>()
+//	<< ", " << v.template get<28>()
+//	<< ", " << v.template get<29>()
+//	<< ", " << v.template get<30>()
+//	<< ", " << v.template get<31>()
+//	<< "]";
+//}
+//
 
 #endif /* msgpack/type/tuple.hpp */
 

@@ -18,7 +18,7 @@
 #ifndef MSGPACK_SBUFFER_HPP__
 #define MSGPACK_SBUFFER_HPP__
 
-#include "msgpack/sbuffer.h"
+#include "sbuffer.h"
 #include <stdexcept>
 
 namespace msgpack {
@@ -28,9 +28,13 @@ class sbuffer : public msgpack_sbuffer {
 public:
 	sbuffer(size_t initsz = MSGPACK_SBUFFER_INIT_SIZE)
 	{
-		base::data = (char*)::malloc(initsz);
-		if(!base::data) {
-			throw std::bad_alloc();
+		if(initsz == 0) {
+			base::data = NULL;
+		} else {
+			base::data = (char*)::malloc(initsz);
+			if(!base::data) {
+				throw std::bad_alloc();
+			}
 		}
 
 		base::size = 0;
@@ -72,10 +76,15 @@ public:
 		return msgpack_sbuffer_release(this);
 	}
 
+	void clear()
+	{
+		msgpack_sbuffer_clear(this);
+	}
+
 private:
 	void expand_buffer(size_t len)
 	{
-		size_t nsize = (base::alloc) ?
+		size_t nsize = (base::alloc > 0) ?
 				base::alloc * 2 : MSGPACK_SBUFFER_INIT_SIZE;
 	
 		while(nsize < base::size + len) { nsize *= 2; }

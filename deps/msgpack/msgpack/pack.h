@@ -18,14 +18,27 @@
 #ifndef MSGPACK_PACK_H__
 #define MSGPACK_PACK_H__
 
-#include "msgpack/pack_define.h"
-#include "msgpack/object.h"
+#include "pack_define.h"
+#include "object.h"
 #include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
+/**
+ * @defgroup msgpack_buffer Buffers
+ * @ingroup msgpack
+ * @{
+ * @}
+ */
+
+/**
+ * @defgroup msgpack_pack Serializer
+ * @ingroup msgpack
+ * @{
+ */
 
 typedef int (*msgpack_packer_write)(void* data, const char* buf, unsigned int len);
 
@@ -57,6 +70,15 @@ static int msgpack_pack_int16(msgpack_packer* pk, int16_t d);
 static int msgpack_pack_int32(msgpack_packer* pk, int32_t d);
 static int msgpack_pack_int64(msgpack_packer* pk, int64_t d);
 
+static int msgpack_pack_fix_uint8(msgpack_packer* pk, uint8_t d);
+static int msgpack_pack_fix_uint16(msgpack_packer* pk, uint16_t d);
+static int msgpack_pack_fix_uint32(msgpack_packer* pk, uint32_t d);
+static int msgpack_pack_fix_uint64(msgpack_packer* pk, uint64_t d);
+static int msgpack_pack_fix_int8(msgpack_packer* pk, int8_t d);
+static int msgpack_pack_fix_int16(msgpack_packer* pk, int16_t d);
+static int msgpack_pack_fix_int32(msgpack_packer* pk, int32_t d);
+static int msgpack_pack_fix_int64(msgpack_packer* pk, int64_t d);
+
 static int msgpack_pack_float(msgpack_packer* pk, float d);
 static int msgpack_pack_double(msgpack_packer* pk, double d);
 
@@ -74,6 +96,8 @@ static int msgpack_pack_raw_body(msgpack_packer* pk, const void* b, size_t l);
 int msgpack_pack_object(msgpack_packer* pk, msgpack_object d);
 
 
+/** @} */
+
 
 #define msgpack_pack_inline_func(name) \
 	inline int msgpack_pack ## name
@@ -81,12 +105,15 @@ int msgpack_pack_object(msgpack_packer* pk, msgpack_object d);
 #define msgpack_pack_inline_func_cint(name) \
 	inline int msgpack_pack ## name
 
+#define msgpack_pack_inline_func_fixint(name) \
+	inline int msgpack_pack_fix ## name
+
 #define msgpack_pack_user msgpack_packer*
 
 #define msgpack_pack_append_buffer(user, buf, len) \
 	return (*(user)->callback)((user)->data, (const char*)buf, len)
 
-#include "msgpack/pack_template.h"
+#include "pack_template.h"
 
 inline void msgpack_packer_init(msgpack_packer* pk, void* data, msgpack_packer_write callback)
 {
