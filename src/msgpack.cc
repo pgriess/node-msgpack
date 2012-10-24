@@ -94,11 +94,25 @@ class MsgpackCycle {
                     // test/test.js to expect the new text
                     throw MsgpackException( \
                         "Cowardly refusing to pack object with circular reference" \
-                    ); 
+                    );
                 }
             }
 
-            _objs.push_back(o);
+        }
+
+        void push(Handle<Value> v) {
+            if (!v->IsArray() && !v->IsObject()) {
+                return;
+            }
+
+            _objs.push_back(v->ToObject());
+        }
+
+        void pop(Handle<Value> v) {
+            if (!v->IsArray() && !v->IsObject()) {
+                return;
+            }
+            _objs.pop_back();
         }
 
     private:
@@ -134,6 +148,8 @@ static void
 v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
               MsgpackCycle *mc) {
     mc->check(v8obj);
+
+    mc->push(v8obj);
 
     if (v8obj->IsUndefined() || v8obj->IsNull()) {
         mo->type = MSGPACK_OBJECT_NIL;
@@ -198,6 +214,8 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
             v8_to_msgpack(o->Get(k), &mo->via.map.ptr[i].val, mz, mc);
         }
     }
+
+    mc->pop(v8obj);
 }
 
 // Convert a MessagePack object to a V8 object.
@@ -302,7 +320,7 @@ pack(const Arguments &args) {
 // undefined value is returned.
 static Handle<Value>
 unpack(const Arguments &args) {
-    static Persistent<String> msgpack_bytes_remaining_symbol = 
+    static Persistent<String> msgpack_bytes_remaining_symbol =
         NODE_PSYMBOL("bytes_remaining");
 
     HandleScope scope;
@@ -330,7 +348,7 @@ unpack(const Arguments &args) {
         } catch (MsgpackException e) {
             return ThrowException(e.getThrownException());
         }
-    
+
     case MSGPACK_UNPACK_CONTINUE:
         return scope.Close(Undefined());
 

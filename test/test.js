@@ -36,9 +36,13 @@ a.push(a);
 testCircular(a);
 
 // Make sure we're catching circular references in objects
-var d = {}
+var d = {};
 d.qqq = d;
 testCircular(d);
+
+// Make sure we're not catching multiple non-circular references
+var e = {};
+testEqual({a: e, b: e});
 
 // Make sure we can serialize the same object repeatedly and that our circular
 // reference marking algorithm doesn't get in the way
