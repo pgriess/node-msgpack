@@ -30,6 +30,11 @@ testEqual([1, 2, 3]);
 testEqual([1, 'abc', false, null]);
 testEqual({'a' : [1, 2, 3], 'b' : 'cdef', 'c' : {'nuts' : 'qqq'}});
 
+// Make sure dates are handled properly
+var date = new Date();
+var dateWrapper = {d: date};
+assert.deepEqual({d: date.toISOString()}, msgpack.unpack(msgpack.pack(dateWrapper)));
+
 // Make sure we're catching circular references for arrays
 var a = [1, 2, 3, 4];
 a.push(a);
