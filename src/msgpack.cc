@@ -79,17 +79,15 @@ class MsgpackCycle {
             _objs.clear();
         }
 
-        void check(Handle<Value> v) {
-            if (!v->IsArray() && !v->IsObject()) {
-                return;
-            }
+        void pushIfAbsent(Handle<Value> v) {
+            if (!v->IsObject()) return;
 
             Handle<Object> o = v->ToObject();
 
             for (std::vector< Handle<Object> >::iterator iter = _objs.begin();
                  iter != _objs.end();
                  iter++) {
-                if ((*iter)->StrictEquals(o)) {
+                if (o == *iter) {
                     // This message should not change without updating
                     // test/test.js to expect the new text
                     throw MsgpackException( \
@@ -98,21 +96,11 @@ class MsgpackCycle {
                 }
             }
 
-        }
-
-        void push(Handle<Value> v) {
-            if (!v->IsArray() && !v->IsObject()) {
-                return;
-            }
-
-            _objs.push_back(v->ToObject());
+            _objs.push_back(o);
         }
 
         void pop(Handle<Value> v) {
-            if (!v->IsArray() && !v->IsObject()) {
-                return;
-            }
-            _objs.pop_back();
+            if (v->IsObject()) _objs.pop_back();
         }
 
     private:
@@ -147,9 +135,7 @@ class MsgpackCycle {
 static void
 v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
               MsgpackCycle *mc) {
-    mc->check(v8obj);
-
-    mc->push(v8obj);
+    mc->pushIfAbsent(v8obj);
 
     if (v8obj->IsUndefined() || v8obj->IsNull()) {
         mo->type = MSGPACK_OBJECT_NIL;
