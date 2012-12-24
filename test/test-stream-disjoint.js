@@ -2,7 +2,7 @@
 
 var assert = require('assert');
 var buffer = require('buffer');
-var msgpack = require('msgpack');
+var msgpack = require('../lib/msgpack');
 var net = require('net');
 var netBindings = process.binding('net');
 var sys = require('sys');
