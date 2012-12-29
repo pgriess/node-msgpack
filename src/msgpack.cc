@@ -55,70 +55,6 @@ class MsgpackSbuffer {
         }
 };
 
-// Object to check for cycles when packing.
-//
-// The implementation tracks all previously-seen values in an unordered
-// std::vector and performs a simple membership check using
-// v8::Value::StrictEquals(). Thus, serialization requires O(n^2) checks where
-// n is the number of array/object instances found in the object being
-// serialized. This is lame.
-//
-// XXX: Change this to a std::multimap based on v8::Object::GetIdentityHash()
-//      to reduce the search space. This should get us down to O(n log n) with
-//      a std::multimap built on top of a RBT or similar.
-//
-// XXX: An even better fix for this would be to use
-//      v8::Object::SetHiddenValue(), but this causes memory leaks for some
-//      reason (see http://github.com/pgriess/node-msgpack/issues/#issue/4)
-class MsgpackCycle {
-    public:
-        MsgpackCycle() {
-        }
-
-        ~MsgpackCycle() {
-            _objs.clear();
-        }
-
-        void check(Handle<Value> v) {
-            if (!v->IsArray() && !v->IsObject()) {
-                return;
-            }
-
-            Handle<Object> o = v->ToObject();
-
-            for (std::vector< Handle<Object> >::iterator iter = _objs.begin();
-                 iter != _objs.end();
-                 iter++) {
-                if ((*iter)->StrictEquals(o)) {
-                    // This message should not change without updating
-                    // test/test.js to expect the new text
-                    throw MsgpackException( \
-                        "Cowardly refusing to pack object with circular reference" \
-                    );
-                }
-            }
-
-        }
-
-        void push(Handle<Value> v) {
-            if (!v->IsArray() && !v->IsObject()) {
-                return;
-            }
-
-            _objs.push_back(v->ToObject());
-        }
-
-        void pop(Handle<Value> v) {
-            if (!v->IsArray() && !v->IsObject()) {
-                return;
-            }
-            _objs.pop_back();
-        }
-
-    private:
-        std::vector< Handle<Object> > _objs;
-};
-
 #define DBG_PRINT_BUF(buf, name) \
     do { \
         fprintf(stderr, "Buffer %s has %lu bytes:\n", \
@@ -145,11 +81,11 @@ class MsgpackCycle {
 //
 // If a circular reference is detected, an exception is thrown.
 static void
-v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
-              MsgpackCycle *mc) {
-    mc->check(v8obj);
+v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t depth) {
 
-    mc->push(v8obj);
+    if (512 < ++depth) {
+        throw MsgpackException("Cowardly refusing to pack object with circular reference");
+    }
 
     if (v8obj->IsUndefined() || v8obj->IsNull()) {
         mo->type = MSGPACK_OBJECT_NIL;
@@ -197,7 +133,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
 
         for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> v = a->Get(i);
-            v8_to_msgpack(v, &mo->via.array.ptr[i], mz, mc);
+            v8_to_msgpack(v, &mo->via.array.ptr[i], mz, depth);
         }
     } else if (Buffer::HasInstance(v8obj)) {
         Local<Object> buf = v8obj->ToObject();
@@ -220,12 +156,10 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz,
         for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> k = a->Get(i);
 
-            v8_to_msgpack(k, &mo->via.map.ptr[i].key, mz, mc);
-            v8_to_msgpack(o->Get(k), &mo->via.map.ptr[i].val, mz, mc);
+            v8_to_msgpack(k, &mo->via.map.ptr[i].key, mz, depth);
+            v8_to_msgpack(o->Get(k), &mo->via.map.ptr[i].val, mz, depth);
         }
     }
-
-    mc->pop(v8obj);
 }
 
 // Convert a MessagePack object to a V8 object.
@@ -298,7 +232,6 @@ pack(const Arguments &args) {
     msgpack_packer pk;
     MsgpackZone mz;
     MsgpackSbuffer sb;
-    MsgpackCycle mc;
 
     msgpack_packer_init(&pk, &sb._sbuf, msgpack_sbuffer_write);
 
@@ -306,7 +239,7 @@ pack(const Arguments &args) {
         msgpack_object mo;
 
         try {
-            v8_to_msgpack(args[0], &mo, &mz._mz, &mc);
+            v8_to_msgpack(args[0], &mo, &mz._mz, 0);
         } catch (MsgpackException e) {
             return ThrowException(e.getThrownException());
         }
