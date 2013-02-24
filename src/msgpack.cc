@@ -306,7 +306,7 @@ pack(const Arguments &args) {
         msgpack_object mo;
 
         try {
-            v8_to_msgpack(args[0], &mo, &mz._mz, &mc);
+            v8_to_msgpack(args[i], &mo, &mz._mz, &mc);
         } catch (MsgpackException e) {
             return ThrowException(e.getThrownException());
         }
