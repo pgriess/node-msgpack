@@ -1,7 +1,7 @@
 // Verify that unpacking a buffer with extra bytes doesn't lose the extra data
 
 var assert = require('assert');
-var msgpack = require('msgpack');
+var msgpack = require('../lib/msgpack');
 var buffer = require('buffer');
 
 // Object to test with 
