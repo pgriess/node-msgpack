@@ -29,6 +29,10 @@ testEqual(false);
 testEqual([1, 2, 3]);
 testEqual([1, 'abc', false, null]);
 testEqual({'a' : [1, 2, 3], 'b' : 'cdef', 'c' : {'nuts' : 'qqq'}});
+testEqual(0 -  Math.pow(2,31) - 1);
+testEqual(0 -  Math.pow(2,40) - 1);
+testEqual(Math.pow(2,31) + 1);
+testEqual(Math.pow(2,40) + 1);
 
 // Make sure dates are handled properly
 var date = new Date();

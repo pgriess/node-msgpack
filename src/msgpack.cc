@@ -94,7 +94,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
         mo->via.boolean = v8obj->BooleanValue();
     } else if (v8obj->IsNumber()) {
         double d = v8obj->NumberValue();
-        if (static_cast<double>(static_cast<int>(d)) != d) {
+        if (trunc(d) != d) {
             mo->type = MSGPACK_OBJECT_DOUBLE;
             mo->via.dec = d;
         } else if (d > 0) {
@@ -178,10 +178,15 @@ msgpack_to_v8(msgpack_object *mo) {
             False();
 
     case MSGPACK_OBJECT_POSITIVE_INTEGER:
-        return Integer::NewFromUnsigned(static_cast<uint32_t>(mo->via.u64));
+        // As per Issue #42, we need to use the base Number
+        // class as opposed to the subclass Integer, since
+        // only the former takes 64-bit inputs. Using the
+        // Integer subclass will truncate 64-bit values.
+        return Number::New(static_cast<double>(mo->via.u64));
 
     case MSGPACK_OBJECT_NEGATIVE_INTEGER:
-        return Integer::New(static_cast<int32_t>(mo->via.i64));
+        // See comment for MSGPACK_OBJECT_POSITIVE_INTEGER
+        return Number::New(static_cast<double>(mo->via.i64));
 
     case MSGPACK_OBJECT_DOUBLE:
         return Number::New(mo->via.dec);
