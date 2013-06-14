@@ -1,7 +1,7 @@
 // A stupid benchmarking tool.
 
 var assert = require('assert');
-var msgpack = require('msgpack');
+var msgpack = require('./lib/msgpack');
 var sys = require('sys');
 
 var DATA_TEMPLATE = {'abcdef' : 1, 'qqq' : 13, '19' : [1, 2, 3, 4]};
