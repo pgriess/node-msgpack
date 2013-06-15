@@ -7,3 +7,4 @@ deps/msgpack/*.o
 deps/msgpack/*.lo
 deps/msgpack/.deps
 deps/msgpack/.libs
+test/packed-data

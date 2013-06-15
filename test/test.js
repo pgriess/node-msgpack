@@ -33,6 +33,7 @@ testEqual(0 -  Math.pow(2,31) - 1);
 testEqual(0 -  Math.pow(2,40) - 1);
 testEqual(Math.pow(2,31) + 1);
 testEqual(Math.pow(2,40) + 1);
+testEqual(123456782345245);
 
 // Make sure dates are handled properly
 var date = new Date();
