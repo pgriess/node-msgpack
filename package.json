@@ -22,6 +22,9 @@
 	"directories": {
 		"lib": "lib"
 	},
+  "optionalDependencies": {
+    "nodeunit"        : "https://github.com/godsflaw/nodeunit/tarball/master"
+  },
 	"engines": {
 		"node": ">=0.8.x"
 	},

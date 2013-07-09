@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+try {
+  var reporter  = require('nodeunit').reporters.default;
+}
+catch(e) {
+  console.log(e.message);
+  console.log("");
+  console.log("Cannot find required modules.");
+  console.log("You can intall modules for this project by doing:");
+  console.log("");
+  console.log("    npm install");
+  console.log("");
+  process.exit();
+}
+
+process.chdir(__dirname);
+
+if (process.argv[2]) {
+  reporter.run(process.argv.slice(2, process.argv.length));
+} else {
+  reporter.run(['test', 'test/lib']);
+}
