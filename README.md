@@ -17,7 +17,7 @@ when doing nothing more than allocating space for the Buffer it must return.
 This finding means we may need to use a pool memory allocator to compete with
 `JSON.stringify()`.
 
-Old performace numbers are below.
+Old performance numbers are below.
 
  The following tests were performed with 500,000 instances of
 the JavaScript object `{'abcdef' : 1, 'qqq' : 13, '19' : [1, 2, 3, 4]}`:
@@ -174,7 +174,8 @@ To run benchmarks:
 <dl>
   <dt>NOTE:</dt>
   <dd>
-    Tests are based on a modified version of nodeunit.  Follow `./run_tests`
-    instructions if you run into problems.
+    Tests are based on a modified version of
+    [nodeunit](https://github.com/godsflaw/nodeunit).
+    Follow `./run_tests` instructions if you run into problems.
   </dd>
 </dl>
