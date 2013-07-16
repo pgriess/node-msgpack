@@ -176,7 +176,7 @@ To run benchmarks:
   <dt>NOTE:</dt>
   <dd>
     Tests are based on a modified version of
-    [nodeunit](https://github.com/godsflaw/nodeunit).
-    Follow `./run_tests` instructions if you run into problems.
+    nodeunit (https://github.com/godsflaw/nodeunit).
+    Follow ./run_tests instructions if you run into problems.
   </dd>
 </dl>
