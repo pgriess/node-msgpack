@@ -51,7 +51,11 @@ class MsgpackSbuffer {
         }
 
         ~MsgpackSbuffer() {
-            msgpack_sbuffer_destroy(&this->_sbuf);
+            // godsflaw: No longer call msgpack_sbuffer_destroy here, as the
+            // memory from _sbuf will be freed in the _free_sbuf callback,
+            // which is called by the Buffer destructor.  While this is more
+            // complicated, it should yield a decent performance increase.
+            msgpack_sbuffer_release(&this->_sbuf);
         }
 };
 
@@ -73,6 +77,16 @@ class MsgpackSbuffer {
             fprintf(stderr, "\n"); \
         } \
     } while (0)
+
+// This will be passed to Buffer::New so that we can manage our own memory.
+// In other news, I am unsure what to do with hint, as I've never seen this
+// coding pattern before.
+static void
+_free_sbuf(char *data, void *hint) {
+    if (data != NULL) {
+        free(data);
+    }
+}
 
 // Convert a V8 object to a MessagePack object.
 //
@@ -229,7 +243,7 @@ msgpack_to_v8(msgpack_object *mo) {
 // will be accumulated to the end of the previous value(s).
 //
 // Any number of objects can be provided as arguments, and all will be
-// serialized to the same bytestream, back-ty-back.
+// serialized to the same bytestream, back-to-back.
 static Handle<Value>
 pack(const Arguments &args) {
     HandleScope scope;
@@ -244,7 +258,7 @@ pack(const Arguments &args) {
         msgpack_object mo;
 
         try {
-            v8_to_msgpack(args[0], &mo, &mz._mz, 0);
+            v8_to_msgpack(args[i], &mo, &mz._mz, 0);
         } catch (MsgpackException e) {
             return ThrowException(e.getThrownException());
         }
@@ -255,10 +269,24 @@ pack(const Arguments &args) {
         }
     }
 
-    Buffer *bp = Buffer::New(sb._sbuf.size);
-    memcpy(Buffer::Data(bp), sb._sbuf.data, sb._sbuf.size);
+    v8::Local<Buffer> slowBuffer = node::Buffer::New(
+        sb._sbuf.data, sb._sbuf.size, _free_sbuf, 0
+    );
 
-    return scope.Close(bp->handle_);
+    v8::Local<Object> global = v8::Context::GetCurrent()->Global();
+    v8::Local<Value> bv = global->Get(String::NewSymbol("Buffer"));
+    
+    assert(bv->IsFunction());
+    
+    Local<Function> bc = v8::Local<Function>::Cast(bv);
+    Handle<Value> cArgs[3] = {
+        slowBuffer->handle_,
+        v8::Integer::New(sb._sbuf.size),
+        v8::Integer::New(0)
+    };
+    v8::Local<Object> fastBuffer = bc->NewInstance(3, cArgs);
+
+    return scope.Close(fastBuffer);
 }
 
 // var o = msgpack.unpack(buf);

@@ -32,6 +32,13 @@ exports.msgpack = {
     test.isObject(msgpack);
     test.done();
   },
+  'pack should return a Buffer object' : function (test) {
+    test.expect(2);
+    var buf = msgpack.pack('abcdef');
+    test.isNotNull(buf);
+    test.isBuffer(buf);
+    test.done();
+  },
   'test for string equality' : function (test) {
     test.expect(1);
     test.deepEqual('abcdef', msgpack.unpack(msgpack.pack('abcdef')));

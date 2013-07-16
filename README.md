@@ -110,11 +110,11 @@ stdin and writing to stdout.
     % echo '[1, 2, 3]' | ./bin/json2msgpack | ./bin/msgpack2json 
     [1,2,3]
 
-### Building and installation
+### Building, Installation, Testing
 
 There are two ways to install msgpack.
 
-## npm
+## NPM
 
 		npm install msgpack
 
@@ -122,19 +122,28 @@ This should build and install msgpack for you. Then just `require('msgpack')`.
 
 ## Manually
 
-Use `make` to build the add-on, then manually copy `build/default/mpBindings.node` 
-and `lib/msgpack.js` it to wherever your node.js installation will look for it (or
-add the build directory to your `$NODE_PATH`).
+You will need node-gyp:
+    npm install -g node-gyp
 
-    % ls
-    LICENSE  Makefile  README.md  deps/  src/  tags  test.js
-    % make
+Then from the root of the msgpack repo, you can run:
+    node-gyp rebuild
 
-The MessagePack library on which this depends is packaged with `node-msgpack`
-and will be built as part of this process.
+NOTE: node-gyp attempts to contact the Internet and download the target version
+      of node.js source and store it locally.  This will only happen once for
+      each time it sees a new node.js version.  If you're on a host with no
+      direct Internet access, you may need to shuffle this source over from
+      another box or sneaker net.  Good luck!
 
-**Note:** MessagePack may fail to build if you do not have a modern version of
-gcc in your `$PATH`. On Mac OS X Snow Leopard (10.5.x), you may have to use
-`gcc-4.2`, which should come with your box but is not used by default.
+## Testing and Benchmarks
 
-    % make CC=gcc-4.2 CXX=gcc-4.2
+To run all tests use:
+    ./run_tests
+
+To run a specific test:
+    ./run_tests test/lib/msgpack.js 
+
+To run benchmarks:
+    ./run_tests test/benchmark.js 
+
+NOTE: Tests are based on a modified version of nodeunit.  Follow ./run_tests
+      instructions if you run into problems.

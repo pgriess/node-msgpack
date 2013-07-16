@@ -19,14 +19,30 @@
 					'-Wall',
 					'-O3'
 				],
-				'cflags!': ['-fno-exceptions'],
-				'cflags_cc!': ['-fno-exceptions'],
+				'cflags!': [
+          '-fno-exceptions',
+          '-Wno-unused-function'
+        ],
+				'cflags_cc!': [
+          '-fno-exceptions',
+          '-Wno-unused-function'
+        ],
 				'conditions': [
 					['OS=="mac"', {
-						'xcode_settings': {
-							'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
-						}
-
+						'configurations': {
+							'Debug': {
+						    'xcode_settings': {
+						    	'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
+                  'WARNING_CFLAGS': ['-Wall', '-Wno-unused-function'],
+						    }
+              },
+							'Release': {
+						    'xcode_settings': {
+						    	'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
+                  'WARNING_CFLAGS': ['-Wall', '-Wno-unused-function'],
+						    },
+              },
+            },
 					}],
 					['OS=="win"', {
 						'configurations': {
