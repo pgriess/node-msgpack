@@ -128,7 +128,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
         mo->type = MSGPACK_OBJECT_RAW;
         Handle<Date> date = Handle<Date>::Cast(v8obj);
         Handle<Function> func = Handle<Function>::Cast(date->Get(String::New("toISOString")));
-        Handle<Value> argv[0] = {};
+        Handle<Value> argv[1] = {};
         Handle<Value> result = func->Call(date, 0, argv);
         mo->via.raw.size = static_cast<uint32_t>(DecodeBytes(result, UTF8));
         mo->via.raw.ptr = (char*) msgpack_zone_malloc(mz, mo->via.raw.size);
