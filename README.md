@@ -6,8 +6,20 @@ required for serialized data is far less than JSON.
 
 ### Performance
 
-`node-msgpack` outperforms the built-in `JSON.stringify()` and `JSON.parse()`
-methods handily. The following tests were performed with 500,000 instances of
+`node-msgpack` is currently slower than the built-in `JSON.stringify()` and
+`JSON.parse()` methods.  In recent versions of node.js, the JSON functions
+have been heavily optimized.  node-msgpack is still more compact, and we are
+currently working performance improvements.  Testing shows that
+`msgpack.pack()` is about 6x slower than `JSON.stringify()`, and
+`msgpack.unpack()` is about 3x slower than `JSON.parse()`.  Early attempts to
+find performance optimizations shows us that `msgpack.pack()` is 2.5x slower
+when doing nothing more than allocating space for the Buffer it must return.
+This finding means we may need to use a pool memory allocator to compete with
+`JSON.stringify()`.
+
+Old performace numbers are below.
+
+ The following tests were performed with 500,000 instances of
 the JavaScript object `{'abcdef' : 1, 'qqq' : 13, '19' : [1, 2, 3, 4]}`:
 
    * `JSON.stringify()` 7.17 seconds
@@ -29,6 +41,7 @@ is the node Buffer type.
 The below code snippet packs and then unpacks a JavaScript object, verifying
 the resulting object at the end using `assert.deepEqual()`.
 
+```javascript
     var assert = require('assert');
     var msgpack = require('msgpack');
 
@@ -37,11 +50,13 @@ the resulting object at the end using `assert.deepEqual()`.
     var oo = msgpack.unpack(b);
 
     assert.deepEqual(oo, o);
+```
 
 As a convenience, a higher level streaming API is provided in the
 `msgpack.Stream` class, which can be constructed around a `net.Stream`
 instance. This object emits `msg` events when an object has been received.
 
+```javascript
     var msgpack = require('msgpack');
 
     // ... get a net.Stream instance, s, from somewhere
@@ -50,6 +65,7 @@ instance. This object emits `msg` events when an object has been received.
     ms.addListener('msg', function(m) {
         sys.debug('received message: ' + sys.inspect(m));
     });
+```
 
 ### Type Mapping
 
@@ -123,27 +139,42 @@ This should build and install msgpack for you. Then just `require('msgpack')`.
 ## Manually
 
 You will need node-gyp:
+
     npm install -g node-gyp
 
 Then from the root of the msgpack repo, you can run:
+
     node-gyp rebuild
 
-NOTE: node-gyp attempts to contact the Internet and download the target version
-      of node.js source and store it locally.  This will only happen once for
-      each time it sees a new node.js version.  If you're on a host with no
-      direct Internet access, you may need to shuffle this source over from
-      another box or sneaker net.  Good luck!
+<dl>
+  <dt>NOTE:</dt>
+  <dd>
+    node-gyp attempts to contact the Internet and download the target version
+    of node.js source and store it locally.  This will only happen once for
+    each time it sees a new node.js version.  If you're on a host with no
+    direct Internet access, you may need to shuffle this source over from
+    another box or sneaker net.  Good luck!
+  </dd>
+</dl>
 
 ## Testing and Benchmarks
 
 To run all tests use:
+
     ./run_tests
 
 To run a specific test:
+
     ./run_tests test/lib/msgpack.js 
 
 To run benchmarks:
+
     ./run_tests test/benchmark.js 
 
-NOTE: Tests are based on a modified version of nodeunit.  Follow ./run_tests
-      instructions if you run into problems.
+<dl>
+  <dt>NOTE:</dt>
+  <dd>
+    Tests are based on a modified version of nodeunit.  Follow `./run_tests`
+    instructions if you run into problems.
+  </dd>
+</dl>
