@@ -1,7 +1,7 @@
 `node-msgpack` is an addon for [NodeJS](http://nodejs.org) that provides an
 API for serializing and de-serializing JavaScript objects using the
 [MessagePack](http://msgpack.sourceforge.net) library. The performance of this
-addon compared to the native `JSON` object is quite good, and the space
+addon compared to the native `JSON` object isn't too bad, and the space
 required for serialized data is far less than JSON.
 
 ### Performance
@@ -19,7 +19,7 @@ This finding means we may need to use a pool memory allocator to compete with
 
 Old performance numbers are below.
 
- The following tests were performed with 500,000 instances of
+The following tests were performed with 500,000 instances of
 the JavaScript object `{'abcdef' : 1, 'qqq' : 13, '19' : [1, 2, 3, 4]}`:
 
    * `JSON.stringify()` 7.17 seconds
@@ -86,8 +86,9 @@ When packing, JavaScript values are mapped to MsgPack types as follows
      `MSGPACK_OBJECT_ARRAY`; each element in the array is packed individually
      the rules in this list
    * NodeJS Buffer values map to `MSGPACK_OBJECT_RAW`
-   * Everything else maps to `MSGPACK_OBJECT_MAP`, where we iterate over the object's
-     properties and pack them and their values as per the mappings in this list
+   * Everything else maps to `MSGPACK_OBJECT_MAP`, where we iterate over
+     the object's properties and pack them and their values as per the
+     mappings in this list
 
 When unpacking, MsgPack types are mapped to JavaScript values as follows
 
@@ -98,10 +99,10 @@ When unpacking, MsgPack types are mapped to JavaScript values as follows
    * `MSGPACK_OBJECT_ARRAY` values map to arrays; each object in the array is
       packed individually using the rules in this list
    * `MSGPACK_OBJECT_RAW` values are mapped to `string` values; these values are
-     unpacked using either UTF-8 or ASCII encoding, depending on the contents
-     of the raw buffer
-   * `MSGPACK_OBJECT_MAP` values are mapped to JavaScript objects; keys and values
-     are unpacked individually using the rules in this list
+      unpacked using either UTF-8 or ASCII encoding, depending on the contents
+      of the raw buffer
+   * `MSGPACK_OBJECT_MAP` values are mapped to JavaScript objects; keys and
+      values are unpacked individually using the rules in this list
 
 Strings are particularly problematic here, as it's difficult to get hints down
 into the packing and unpacking codepaths about how to interpret a particular
@@ -165,11 +166,11 @@ To run all tests use:
 
 To run a specific test:
 
-    ./run_tests test/lib/msgpack.js 
+    ./run_tests test/lib/msgpack.js
 
 To run benchmarks:
 
-    ./run_tests test/benchmark.js 
+    ./run_tests test/benchmark.js
 
 <dl>
   <dt>NOTE:</dt>
