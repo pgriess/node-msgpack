@@ -1,14 +1,17 @@
-/* Bindings for http://msgpack.sourceforge.net/ */
-
 #include <v8.h>
 #include <node.h>
 #include <node_buffer.h>
 #include <msgpack.h>
 #include <math.h>
+#include <iostream>
 #include <vector>
+#include <stack>
 
+using namespace std;
 using namespace v8;
 using namespace node;
+
+#define SBUF_POOL 50000
 
 static Persistent<FunctionTemplate> msgpack_unpack_template;
 
@@ -41,23 +44,7 @@ class MsgpackZone {
         }
 };
 
-// A holder for a msgpack_sbuffer object; ensures destruction on scope exit
-class MsgpackSbuffer {
-    public:
-        msgpack_sbuffer _sbuf;
-
-        MsgpackSbuffer() {
-            msgpack_sbuffer_init(&this->_sbuf);
-        }
-
-        ~MsgpackSbuffer() {
-            // godsflaw: No longer call msgpack_sbuffer_destroy here, as the
-            // memory from _sbuf will be freed in the _free_sbuf callback,
-            // which is called by the Buffer destructor.  While this is more
-            // complicated, it should yield a decent performance increase.
-            msgpack_sbuffer_release(&this->_sbuf);
-        }
-};
+static stack<msgpack_sbuffer *> sbuffers;
 
 #define DBG_PRINT_BUF(buf, name) \
     do { \
@@ -80,11 +67,19 @@ class MsgpackSbuffer {
 
 // This will be passed to Buffer::New so that we can manage our own memory.
 // In other news, I am unsure what to do with hint, as I've never seen this
-// coding pattern before.
+// coding pattern before.  For now I have overloaded it to be a void pointer
+// to a msgpack_sbuffer.  This let's us push it onto the stack for use later.
 static void
 _free_sbuf(char *data, void *hint) {
-    if (data != NULL) {
-        free(data);
+    if (data != NULL && hint != NULL) {
+        msgpack_sbuffer *sbuffer = (msgpack_sbuffer *)hint;
+        if (sbuffers.size() > SBUF_POOL ||
+            sbuffer->alloc > (MSGPACK_SBUFFER_INIT_SIZE * 5)) {
+            msgpack_sbuffer_free(sbuffer);
+        } else {
+            sbuffer->size = 0;
+            sbuffers.push(sbuffer);
+        }
     }
 }
 
@@ -250,9 +245,16 @@ pack(const Arguments &args) {
 
     msgpack_packer pk;
     MsgpackZone mz;
-    MsgpackSbuffer sb;
+    msgpack_sbuffer *sb;
 
-    msgpack_packer_init(&pk, &sb._sbuf, msgpack_sbuffer_write);
+    if (sbuffers.size()) {
+        sb = sbuffers.top();
+        sbuffers.pop();
+    } else {
+        sb = msgpack_sbuffer_new();
+    }
+
+    msgpack_packer_init(&pk, sb, msgpack_sbuffer_write);
 
     for (int i = 0; i < args.Length(); i++) {
         msgpack_object mo;
@@ -270,9 +272,11 @@ pack(const Arguments &args) {
     }
 
     v8::Local<Buffer> slowBuffer = node::Buffer::New(
-        sb._sbuf.data, sb._sbuf.size, _free_sbuf, 0
+        sb->data, sb->alloc, _free_sbuf, (void *)sb 
     );
 
+    // godsflaw: this part makes msgpack.pack() 1x slower than JSON.stringify()
+    // reaching back into JS appears to be expensive.
     v8::Local<Object> global = v8::Context::GetCurrent()->Global();
     v8::Local<Value> bv = global->Get(String::NewSymbol("Buffer"));
     
@@ -281,7 +285,7 @@ pack(const Arguments &args) {
     Local<Function> bc = v8::Local<Function>::Cast(bv);
     Handle<Value> cArgs[3] = {
         slowBuffer->handle_,
-        v8::Integer::New(sb._sbuf.size),
+        v8::Integer::New(sb->size),
         v8::Integer::New(0)
     };
     v8::Local<Object> fastBuffer = bc->NewInstance(3, cArgs);

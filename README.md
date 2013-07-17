@@ -9,13 +9,9 @@ required for serialized data is far less than JSON.
 `node-msgpack` is currently slower than the built-in `JSON.stringify()` and
 `JSON.parse()` methods.  In recent versions of node.js, the JSON functions
 have been heavily optimized.  node-msgpack is still more compact, and we are
-currently working performance improvements.  Testing shows that
-`msgpack.pack()` is about 6x slower than `JSON.stringify()`, and
-`msgpack.unpack()` is about 3x slower than `JSON.parse()`.  Early attempts to
-find performance optimizations shows us that `msgpack.pack()` is 2.5x slower
-when doing nothing more than allocating space for the Buffer it must return.
-This finding means we may need to use a pool memory allocator to compete with
-`JSON.stringify()`.
+currently working performance improvements.  Testing shows that, over 500k
+iterations, `msgpack.pack()` is about 5x slower than `JSON.stringify()`, and
+`msgpack.unpack()` is about 3.5x slower than `JSON.parse()`.
 
 Old performance numbers are below.
 
@@ -158,7 +154,7 @@ Then from the root of the msgpack repo, you can run:
   </dd>
 </dl>
 
-## Testing and Benchmarks
+## Testing
 
 To run all tests use:
 
@@ -168,10 +164,6 @@ To run a specific test:
 
     ./run_tests test/lib/msgpack.js
 
-To run benchmarks:
-
-    ./run_tests test/benchmark.js
-
 <dl>
   <dt>NOTE:</dt>
   <dd>
@@ -180,3 +172,9 @@ To run benchmarks:
     Follow ./run_tests instructions if you run into problems.
   </dd>
 </dl>
+
+## Benchmarks
+
+To run benchmarks:
+
+    ./run_tests test/benchmark/benchmark.js

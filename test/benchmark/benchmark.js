@@ -1,7 +1,7 @@
 var fs      = require('fs'),
     sys     = require('sys'),
-    msgpack = require("../lib/msgpack"),
-    stub    = require("./fixtures/stub");
+    msgpack = require("../../lib/msgpack"),
+    stub    = require("../fixtures/stub");
 
 var DATA_TEMPLATE = {'abcdef' : 1, 'qqq' : 13, '19' : [1, 2, 3, 4]};
 var DATA = [];
@@ -22,7 +22,7 @@ function _tear_down(callback) {
 exports.benchmark = {
   setUp : _set_up,
   tearDown : _tear_down,
-  'JSON.stringify no more than 7x faster than msgpack.pack' : function (test) {
+  'JSON.stringify no more than 6x faster than msgpack.pack' : function (test) {
     var jsonStr;
     var now = Date.now();
     DATA.forEach(function(d) {
@@ -45,7 +45,7 @@ exports.benchmark = {
     );
     test.expect(1);
     test.ok(
-      packTime/stringifyTime < 7,
+      packTime/stringifyTime < 6,
       "msgpack.pack: "+packTime+"ms, JSON.stringify: "+stringifyTime+"ms"
     );
     test.done();
