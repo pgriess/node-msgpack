@@ -26,5 +26,16 @@ exports.regression = {
     test.deepEqual(obj, unpackedObj);
     fs.unlinkSync(fileName);
     test.done();
+  },
+  'https://github.com/msgpack/msgpack-node/issues/5' : function (test) {
+    var originalArray = ['one', 'two'];
+    var packedArray   = msgpack.pack(originalArray);
+    var buffer        = new Buffer(packedArray.toString('binary'), 'binary');
+    test.expect(3);
+    unpackedArray = msgpack.unpack(buffer);
+    test.isArray(originalArray);
+    test.isArray(unpackedArray);
+    test.deepEqual(originalArray, unpackedArray);
+    test.done();
   }
 };
