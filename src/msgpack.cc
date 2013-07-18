@@ -13,6 +13,11 @@ using namespace node;
 
 #define SBUF_POOL 50000
 
+// MSC does not support C99 trunc function.
+#ifdef _MSC_BUILD
+double trunc(double d){ return (d>0) ? floor(d) : ceil(d) ; }
+#endif
+
 static Persistent<FunctionTemplate> msgpack_unpack_template;
 
 // An exception class that wraps a textual message
