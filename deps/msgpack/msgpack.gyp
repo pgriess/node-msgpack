@@ -13,7 +13,7 @@
 					'version.c'					
 				],
 				'cflags_cc': [
-					'-all',
+					'-Wall',
 					'-O3'
 				],
 				'cflags': [
