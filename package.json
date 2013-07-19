@@ -10,7 +10,8 @@
 		},
 		{
 			"name": "Peter Griess",
-			"url": "https://github.com/pgriess"
+			"url": "https://github.com/pgriess",
+			"email": "pg@std.in"
 		},
 		{
 			"name": "Maxwell Krohn",
@@ -26,7 +27,7 @@
 		},
 		{
 			"name": "Christopher Mooney",
-			"url": "https://github.com/godsflaw"
+			"url": "https://github.com/godsflaw",
 			"email": "chris@dod.net"
 		},
 		{
@@ -43,7 +44,7 @@
 		},
 		{
 			"name": "Tom Taylor",
-			"email": "tom@tomtaylor.co.uk"
+			"email": "tom@tomtaylor.co.uk",
 			"url": "https://github.com/tomtaylor"
 		},
 		{
