@@ -1,29 +1,66 @@
 {
 	"name": "msgpack",
 	"description": "A space-efficient object serialization library for node.js",
-	"version": "0.1.8",
-	"homepage": "https://github.com/pgriess/node-msgpack",
-	"author": "Peter Griess <pg@std.in>",
+	"version": "0.1.9",
+	"homepage": "https://github.com/msgpack/msgpack-node",
 	"contributors": [
 		{
-			"name": "Tom Taylor",
-			"email": "tom@tomtaylor.co.uk"
+			"name": "Amos Barreto",
+			"url": "https://github.com/squamos"
+		},
+		{
+			"name": "Peter Griess",
+			"url": "https://github.com/pgriess"
+		},
+		{
+			"name": "Maxwell Krohn",
+			"url": "https://github.com/maxtaco"
+		},
+		{
+			"name": "Jaye Marshall",
+			"url": "https://github.com/jmars"
+		},
+		{
+			"name": "matthiasg",
+			"url": "https://github.com/matthiasg"
 		},
 		{
 			"name": "Christopher Mooney",
+			"url": "https://github.com/godsflaw"
 			"email": "chris@dod.net"
+		},
+		{
+			"name": "Michael Phan-Ba",
+			"url": "https://github.com/mikepb"
+		},
+		{
+			"name": "Bob Potter",
+			"url": "https://github.com/bpot"
+		},
+		{
+			"name": "rashfael",
+			"url": "https://github.com/rashfael"
+		},
+		{
+			"name": "Tom Taylor",
+			"email": "tom@tomtaylor.co.uk"
+			"url": "https://github.com/tomtaylor"
+		},
+		{
+			"name": "Keiji Yoshimi",
+			"url": "https://github.com/walf443"
 		}
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/pgriess/node-msgpack.git"
+		"url": "https://github.com/msgpack/msgpack-node.git"
 	},
 	"main": "./lib/msgpack",
 	"directories": {
 		"lib": "lib"
 	},
   "optionalDependencies": {
-    "nodeunit"        : "https://github.com/godsflaw/nodeunit/tarball/master"
+    "nodeunit": "https://github.com/godsflaw/nodeunit/tarball/master"
   },
 	"engines": {
 		"node": ">=0.8.x"
