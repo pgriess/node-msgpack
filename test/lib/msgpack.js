@@ -44,6 +44,12 @@ exports.msgpack = {
     test.deepEqual('abcdef', msgpack.unpack(msgpack.pack('abcdef')));
     test.done();
   },
+//  'test unpacking a buffer' : function (test) {
+//    test.expect(1);
+//    var testBuffer = new Buffer([0x00, 0x01, 0x02]);
+//    test.deepEqual(testBuffer, msgpack.unpack(msgpack.pack(testBuffer), true));
+//    test.done();
+//  },
   'test for numeric equality' : function (test) {
     test.expect(2);
     test.deepEqual(123, msgpack.unpack(msgpack.pack(123)));
