@@ -252,7 +252,7 @@ pack(const Arguments &args) {
     MsgpackZone mz;
     msgpack_sbuffer *sb;
 
-    if (sbuffers.size()) {
+    if (!sbuffers.empty()) {
         sb = sbuffers.top();
         sbuffers.pop();
     } else {
