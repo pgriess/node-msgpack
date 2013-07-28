@@ -1,7 +1,7 @@
 {
 	"name": "msgpack",
 	"description": "A space-efficient object serialization library for node.js",
-	"version": "0.1.10",
+	"version": "0.1.11",
 	"homepage": "https://github.com/msgpack/msgpack-node",
 	"contributors": [
 		{
@@ -46,6 +46,10 @@
 			"name": "Tom Taylor",
 			"email": "tom@tomtaylor.co.uk",
 			"url": "https://github.com/tomtaylor"
+		},
+		{
+			"name": "Brian White",
+			"url": "https://github.com/mscdex"
 		},
 		{
 			"name": "Keiji Yoshimi",
