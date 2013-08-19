@@ -61,6 +61,9 @@
 		"url": "https://github.com/msgpack/msgpack-node.git"
 	},
 	"main": "./lib/msgpack",
+	"scripts": {
+		"test": "./run_tests"
+	},
 	"directories": {
 		"lib": "lib"
 	},
