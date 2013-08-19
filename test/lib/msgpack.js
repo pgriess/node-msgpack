@@ -192,17 +192,17 @@ exports.msgpack = {
     test.expect(4);
     // Object to test with
     var o = [1, 2, 3];
-    
+
     // Create two buffers full of packed data, 'b' and 'bb', with the latter
     // containing 3 extra bytes
     var b = msgpack.pack(o);
     var bb = new Buffer(b.length + 3);
     b.copy(bb, 0, 0, b.length);
-    
+
     // Expect no remaining bytes when unpacking 'b'
     test.deepEqual(msgpack.unpack(b), o);
     test.deepEqual(msgpack.unpack.bytes_remaining, 0);
-    
+
     // Expect 3 remaining bytes when unpacking 'bb'
     test.deepEqual(msgpack.unpack(bb), o);
     test.equal(msgpack.unpack.bytes_remaining, 3);
@@ -220,6 +220,46 @@ exports.msgpack = {
     } catch (e) {
       test.ok(false, e.message);
     }
+    test.done();
+  },
+  'test toJSON compatibility' : function (test) {
+    var expect = { msg: 'hello world' };
+    var subject = { toJSON: function() { return expect; }};
+    test.expect(1);
+    test.deepEqual(expect, msgpack.unpack(msgpack.pack(subject)));
+    test.done();
+  },
+  'test toJSON compatibility for multiple args' : function (test) {
+    var expect = { msg: 'hello world' };
+    var subject = { toJSON: function() { return expect; }};
+    var subject1 = { toJSON: function() { msg: 'goodbye world' }};
+    test.expect(1);
+    test.deepEqual(expect, msgpack.unpack(msgpack.pack(subject, subject1)));
+    test.done();
+  },
+  'test toJSON compatibility for nested toJSON' : function (test) {
+    var expect = { msg: 'hello world' };
+    var subject = {
+      toJSON: function() {
+        return [
+          expect,
+          {
+            toJSON: function() {
+              return expect;
+            }
+          }
+        ];
+      }
+    };
+    test.expect(1);
+    test.deepEqual([expect, expect], msgpack.unpack(msgpack.pack(subject)));
+    test.done();
+  },
+  'test toJSON compatibility with prototype' : function (test) {
+    var expect = { msg: 'hello world' };
+    var subject = { __proto__: { toJSON: function() { return expect; }}};
+    test.expect(1);
+    test.deepEqual(expect, msgpack.unpack(msgpack.pack(subject)));
     test.done();
   }
 };
