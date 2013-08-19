@@ -96,6 +96,7 @@ _free_sbuf(char *data, void *hint) {
 // If a circular reference is detected, an exception is thrown.
 static void
 v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t depth) {
+    static const Persistent<String> TOJSON = NODE_PSYMBOL("toJSON");
 
     if (512 < ++depth) {
         throw MsgpackException("Cowardly refusing to pack object with circular reference");
@@ -158,6 +159,14 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
         mo->via.raw.ptr = Buffer::Data(buf);
     } else {
         Local<Object> o = v8obj->ToObject();
+
+        // for o.toJSON()
+        if (o->Has(TOJSON) && o->Get(TOJSON)->IsFunction()) {
+            Local<Function> fn = Local<Function>::Cast(o->Get(TOJSON));
+            v8_to_msgpack(fn->Call(o, 0, NULL), mo, mz, depth);
+            return;
+        }
+
         Local<Array> a = o->GetPropertyNames();
 
         mo->type = MSGPACK_OBJECT_MAP;
@@ -277,16 +286,16 @@ pack(const Arguments &args) {
     }
 
     v8::Local<Buffer> slowBuffer = node::Buffer::New(
-        sb->data, sb->alloc, _free_sbuf, (void *)sb 
+        sb->data, sb->alloc, _free_sbuf, (void *)sb
     );
 
     // godsflaw: this part makes msgpack.pack() 1x slower than JSON.stringify()
     // reaching back into JS appears to be expensive.
     v8::Local<Object> global = v8::Context::GetCurrent()->Global();
     v8::Local<Value> bv = global->Get(String::NewSymbol("Buffer"));
-    
+
     assert(bv->IsFunction());
-    
+
     Local<Function> bc = v8::Local<Function>::Cast(bv);
     Handle<Value> cArgs[3] = {
         slowBuffer->handle_,

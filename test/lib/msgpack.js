@@ -237,6 +237,24 @@ exports.msgpack = {
     test.deepEqual(expect, msgpack.unpack(msgpack.pack(subject, subject1)));
     test.done();
   },
+  'test toJSON compatibility for nested toJSON' : function (test) {
+    var expect = { msg: 'hello world' };
+    var subject = {
+      toJSON: function() {
+        return [
+          expect,
+          {
+            toJSON: function() {
+              return expect;
+            }
+          }
+        ];
+      }
+    };
+    test.expect(1);
+    test.deepEqual([expect, expect], msgpack.unpack(msgpack.pack(subject)));
+    test.done();
+  },
   'test toJSON compatibility with prototype' : function (test) {
     var expect = { msg: 'hello world' };
     var subject = { __proto__: { toJSON: function() { return expect; }}};
