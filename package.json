@@ -1,7 +1,7 @@
 {
 	"name": "msgpack",
 	"description": "A space-efficient object serialization library for node.js",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"homepage": "https://github.com/msgpack/msgpack-node",
 	"contributors": [
 		{
@@ -61,14 +61,11 @@
 		"url": "https://github.com/msgpack/msgpack-node.git"
 	},
 	"main": "./lib/msgpack",
-	"scripts": {
-		"test": "./run_tests"
-	},
 	"directories": {
 		"lib": "lib"
 	},
-  "optionalDependencies": {
-    "nodeunit": "https://github.com/godsflaw/nodeunit/tarball/master"
+  "devDependencies": {
+    "nodeunit" : "https://github.com/godsflaw/nodeunit/archive/master.tar.gz"
   },
 	"engines": {
 		"node": ">=0.8.x"
@@ -76,5 +73,8 @@
 	"bin": {
 		"json2msgpack": "./bin/json2msgpack",
 		"msgpack2json": "./bin/msgpack2json"
+	},
+	"scripts": {
+		"test": "./run_tests"
 	}
 }

@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
+"use strict";
+
 try {
   var reporter  = require('nodeunit').reporters.default;
 }
 catch(e) {
-  console.log(e.message);
+  console.log("Error: " + e.message);
   console.log("");
   console.log("Cannot find required modules.");
   console.log("You can intall modules for this project by doing:");
@@ -19,5 +21,7 @@ process.chdir(__dirname);
 if (process.argv[2]) {
   reporter.run(process.argv.slice(2, process.argv.length));
 } else {
-  reporter.run(['test', 'test/lib']);
+  reporter.run(['test', 'test/lib'], undefined, function () {
+    process.exit();
+  });
 }
