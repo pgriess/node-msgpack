@@ -34,6 +34,32 @@
 		msgpack::type::make_define(__VA_ARGS__).msgpack_object(o, z); \
 	}
 
+// MSGPACK_ADD_ENUM must be used in the global namespace.
+#define MSGPACK_ADD_ENUM(enum) \
+  namespace msgpack { \
+    template <> \
+    inline enum& operator>> (object o, enum& v) \
+    { \
+      int tmp; \
+      o >> tmp; \
+      v = static_cast<enum>(tmp); \
+      return v; \
+    } \
+    template <> \
+    void operator<< (object::with_zone& o, const enum& v) \
+    { \
+      o << static_cast<int>(v); \
+    } \
+    namespace detail { \
+      template <typename Stream> \
+      struct packer_serializer<Stream, enum> { \
+        static packer<Stream>& pack(packer<Stream>& o, const enum& v) { \
+          return o << static_cast<int>(v); \
+        } \
+      }; \
+    } \
+  }
+
 namespace msgpack {
 namespace type {
 
@@ -50,7 +76,7 @@ struct define<> {
 	template <typename Packer>
 	void msgpack_pack(Packer& pk) const
 	{
-		pk.pack_array(1);
+		pk.pack_array(0);
 	}
 	void msgpack_unpack(msgpack::object o)
 	{
