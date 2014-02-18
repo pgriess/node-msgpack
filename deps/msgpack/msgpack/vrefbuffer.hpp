@@ -29,7 +29,9 @@ public:
 	vrefbuffer(size_t ref_size = MSGPACK_VREFBUFFER_REF_SIZE,
 			size_t chunk_size = MSGPACK_VREFBUFFER_CHUNK_SIZE)
 	{
-		msgpack_vrefbuffer_init(this, ref_size, chunk_size);
+		if (!msgpack_vrefbuffer_init(this, ref_size, chunk_size)) {
+			throw std::bad_alloc();
+		}
 	}
 
 	~vrefbuffer()
@@ -38,7 +40,7 @@ public:
 	}
 
 public:
-	void write(const char* buf, unsigned int len)
+	void write(const char* buf, size_t len)
 	{
 		if(len < base::ref_size) {
 			append_copy(buf, len);

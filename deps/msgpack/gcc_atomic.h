@@ -1,8 +1,4 @@
 /*
- * MessagePack for C version information
- *
- * Copyright (C) 2008-2009 FURUHASHI Sadayuki
- *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
  *    You may obtain a copy of the License at
@@ -15,26 +11,23 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-#ifndef MSGPACK_VERSION_H__
-#define MSGPACK_VERSION_H__
 
-#ifdef __cplusplus
+#ifndef MSGPACK_GCC_ATOMIC_H__
+#define MSGPACK_GCC_ATOMIC_H__
+
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
+typedef int _msgpack_atomic_counter_t;
 
-const char* msgpack_version(void);
-int msgpack_version_major(void);
-int msgpack_version_minor(void);
-
-#define MSGPACK_VERSION "0.5.8"
-#define MSGPACK_VERSION_MAJOR 0
-#define MSGPACK_VERSION_MINOR 5
+int _msgpack_sync_decr_and_fetch(volatile _msgpack_atomic_counter_t* ptr);
+int _msgpack_sync_incr_and_fetch(volatile _msgpack_atomic_counter_t* ptr);
 
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif
 
-#endif /* msgpack/version.h */
 
+#endif // MSGPACK_GCC_ATOMIC_H__

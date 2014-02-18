@@ -5,6 +5,7 @@
 				'include_dirs': [ '.' ],
 				'type': 'static_library',
 				'sources': [
+					'gcc_atomic.cpp',
 					'object.cpp',
 					'objectc.c',
 					'unpack.c',
