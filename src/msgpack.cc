@@ -282,26 +282,11 @@ static NAN_METHOD(pack) {
         }
     }
 
-    v8::Local<Object> slowBuffer = NanNewBufferHandle(
+    Local<Object> slowBuffer = NanNewBufferHandle(
         sb->data, sb->size, _free_sbuf, (void *)sb
     );
 
-    // godsflaw: this part makes msgpack.pack() 1x slower than JSON.stringify()
-    // reaching back into JS appears to be expensive.
-    v8::Local<Object> global = NanGetCurrentContext()->Global();
-    v8::Local<Value> bv = global->Get(NanNew<String>("Buffer"));
-
-    assert(bv->IsFunction());
-
-    Local<Function> bc = v8::Local<Function>::Cast(bv);
-    Handle<Value> cArgs[3] = {
-        slowBuffer,
-        NanNew<Integer>(sb->size),
-        NanNew<Integer>(0)
-    };
-    v8::Local<Object> fastBuffer = bc->NewInstance(3, cArgs);
-
-    NanReturnValue(fastBuffer);
+    NanReturnValue(slowBuffer);
 }
 
 // var o = msgpack.unpack(buf);
