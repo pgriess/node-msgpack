@@ -22,6 +22,37 @@ double trunc(double d){ return (d>0) ? floor(d) : ceil(d) ; }
 
 static Persistent<FunctionTemplate> msgpack_unpack_template;
 
+//nan 1.0.0 for node 0.10.x performs a lot slower
+//unpack benchmarks ar roughly x2 slower, because
+//of that object creation for older versions is done
+//the old way
+template<class T>
+NAN_INLINE static Local<T> new_v8_obj() {
+    #if NODE_MODULE_VERSION >11
+        return NanNew<T>();
+    #else
+        return T::New();
+    #endif
+}
+
+template<class T, class P>
+NAN_INLINE static Local<T> new_v8_obj(const P arg) {
+    #if NODE_MODULE_VERSION >11
+        return NanNew<T>(arg);
+    #else
+        return T::New(arg);
+    #endif
+}
+
+template<class T, class P1, class P2>
+NAN_INLINE static Local<T> new_v8_obj(const P1 arg1, const P2 arg2) {
+    #if NODE_MODULE_VERSION >11
+        return NanNew<T>(arg1, arg2);
+    #else
+        return T::New(arg1, arg2);
+    #endif
+}
+
 // An exception class that wraps a textual message
 class MsgpackException {
     public:
@@ -128,7 +159,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
     } else if (v8obj->IsDate()) {
         mo->type = MSGPACK_OBJECT_RAW;
         Handle<Date> date = Handle<Date>::Cast(v8obj);
-        Handle<Function> func = Handle<Function>::Cast(date->Get(NanNew<String>("toISOString")));
+        Handle<Function> func = Handle<Function>::Cast(date->Get(new_v8_obj<String>("toISOString")));
         Handle<Value> argv[1] = {};
         Handle<Value> result = func->Call(date, 0, argv);
         mo->via.raw.size = static_cast<uint32_t>(DecodeBytes(result, UTF8));
@@ -158,7 +189,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
         mo->via.raw.ptr = Buffer::Data(buf);
     } else {
         Local<Object> o = v8obj->ToObject();
-        Local<String> toJSON = NanNew<String>("toJSON");
+        Local<String> toJSON = new_v8_obj<String>("toJSON");
         // for o.toJSON()
         if (o->Has(toJSON) && o->Get(toJSON)->IsFunction()) {
             Local<Function> fn = Local<Function>::Cast(o->Get(toJSON));
@@ -204,17 +235,17 @@ msgpack_to_v8(msgpack_object *mo) {
         // class as opposed to the subclass Integer, since
         // only the former takes 64-bit inputs. Using the
         // Integer subclass will truncate 64-bit values.
-        return NanNew<Number>(static_cast<double>(mo->via.u64));
+        return new_v8_obj<Number>(static_cast<double>(mo->via.u64));
 
     case MSGPACK_OBJECT_NEGATIVE_INTEGER:
         // See comment for MSGPACK_OBJECT_POSITIVE_INTEGER
-        return NanNew<Number>(static_cast<double>(mo->via.i64));
+        return new_v8_obj<Number>(static_cast<double>(mo->via.i64));
 
     case MSGPACK_OBJECT_DOUBLE:
-        return NanNew<Number>(mo->via.dec);
+        return new_v8_obj<Number>(mo->via.dec);
 
     case MSGPACK_OBJECT_ARRAY: {
-        Local<Array> a = NanNew<Array>(mo->via.array.size);
+        Local<Array> a = new_v8_obj<Array>(mo->via.array.size);
 
         for (uint32_t i = 0; i < mo->via.array.size; i++) {
             a->Set(i, msgpack_to_v8(&mo->via.array.ptr[i]));
@@ -224,10 +255,10 @@ msgpack_to_v8(msgpack_object *mo) {
     }
 
     case MSGPACK_OBJECT_RAW:
-        return NanNew<String>(mo->via.raw.ptr, mo->via.raw.size);
+        return new_v8_obj<String>(mo->via.raw.ptr, mo->via.raw.size);
 
     case MSGPACK_OBJECT_MAP: {
-        Local<Object> o = NanNew<Object>();
+        Local<Object> o = new_v8_obj<Object>();
 
         for (uint32_t i = 0; i < mo->via.map.size; i++) {
             o->Set(
@@ -312,12 +343,12 @@ static NAN_METHOD(unpack) {
     case MSGPACK_UNPACK_SUCCESS:
         try {
             NanNew<FunctionTemplate>(msgpack_unpack_template)->GetFunction()->Set(
-                NanNew<String>("bytes_remaining"),
-                NanNew<Integer>(static_cast<int32_t>(Buffer::Length(buf) - off))
+                new_v8_obj<String>("bytes_remaining"),
+                new_v8_obj<Integer>(static_cast<int32_t>(Buffer::Length(buf) - off))
             );
             NanReturnValue(msgpack_to_v8(&mo));
         } catch (MsgpackException e) {
-            NanThrowError(e.getThrownException());
+            return NanThrowError(e.getThrownException());
         }
 
     case MSGPACK_UNPACK_CONTINUE:
