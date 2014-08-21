@@ -243,6 +243,9 @@ msgpack_to_v8(msgpack_object *mo) {
     case MSGPACK_OBJECT_UNDEF:
         return Nan::Undefined();
 
+    case MSGPACK_OBJECT_UNDEF:
+        return NanUndefined();
+
     case MSGPACK_OBJECT_BOOLEAN:
         return (mo->via.boolean) ?
             Nan::True() :
