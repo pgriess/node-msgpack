@@ -36,6 +36,7 @@ class type_error : public std::bad_cast { };
 namespace type {
 	enum object_type {
 		NIL					= MSGPACK_OBJECT_NIL,
+		UNDEF					= MSGPACK_OBJECT_UNDEF,
 		BOOLEAN				= MSGPACK_OBJECT_BOOLEAN,
 		POSITIVE_INTEGER	= MSGPACK_OBJECT_POSITIVE_INTEGER,
 		NEGATIVE_INTEGER	= MSGPACK_OBJECT_NEGATIVE_INTEGER,
@@ -81,6 +82,7 @@ struct object {
 	union_type via;
 
 	bool is_nil() const { return type == type::NIL; }
+	bool is_undef() const { return type == type::UNDEF; }
 
 	template <typename T>
 	T as() const;
@@ -361,6 +363,10 @@ packer<Stream>& operator<< (packer<Stream>& o, const object& v)
 	switch(v.type) {
 	case type::NIL:
 		o.pack_nil();
+		return o;
+
+	case type::UNDEF:
+		o.pack_undef();
 		return o;
 
 	case type::BOOLEAN:

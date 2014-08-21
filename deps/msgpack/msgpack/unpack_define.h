@@ -41,7 +41,7 @@ typedef enum {
 	//CS_                = 0x02,  // false
 	//CS_                = 0x03,  // true
 
-	//CS_                = 0x04,
+	CS_UNDEF             = 0x04,  // undef
 	//CS_                = 0x05,
 	//CS_                = 0x06,
 	//CS_                = 0x07,

@@ -11,7 +11,7 @@
 					'unpack.c',
 					'vrefbuffer.c',
 					'zone.c',
-					'version.c'					
+					'version.c'
 				],
 				'cflags_cc': [
 					'-Wall',
@@ -31,8 +31,8 @@
         ],
 				'conditions': [
           ['OS=="mac"', {
-            'configurations': {                                                 
-              'Debug': {       
+            'configurations': {
+              'Debug': {
                 'xcode_settings': {
                   'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
                   'WARNING_CFLAGS': ['-Wall', '-Wno-unused-function'],

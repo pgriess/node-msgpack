@@ -38,6 +38,9 @@ int msgpack_pack_object(msgpack_packer* pk, msgpack_object d)
 	case MSGPACK_OBJECT_NIL:
 		return msgpack_pack_nil(pk);
 
+	case MSGPACK_OBJECT_UNDEF:
+		return msgpack_pack_undef(pk);
+
 	case MSGPACK_OBJECT_BOOLEAN:
 		if(d.via.boolean) {
 			return msgpack_pack_true(pk);
@@ -104,6 +107,10 @@ void msgpack_object_print(FILE* out, msgpack_object o)
 	switch(o.type) {
 	case MSGPACK_OBJECT_NIL:
 		fprintf(out, "nil");
+		break;
+
+	case MSGPACK_OBJECT_UNDEF:
+		fprintf(out, "undef");
 		break;
 
 	case MSGPACK_OBJECT_BOOLEAN:
@@ -174,6 +181,9 @@ bool msgpack_object_equal(const msgpack_object x, const msgpack_object y)
 
 	switch(x.type) {
 	case MSGPACK_OBJECT_NIL:
+		return true;
+
+	case MSGPACK_OBJECT_UNDEF:
 		return true;
 
 	case MSGPACK_OBJECT_BOOLEAN:

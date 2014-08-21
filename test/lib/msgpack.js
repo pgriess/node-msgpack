@@ -62,6 +62,12 @@ exports.msgpack = {
     test.isNull(msgpack.unpack(msgpack.pack(null)));
     test.done();
   },
+  'test for undefined' : function (test) {
+    test.expect(2);
+    test.deepEqual(undefined, msgpack.unpack(msgpack.pack(undefined)));
+    test.isUndefined(msgpack.unpack(msgpack.pack(undefined)));
+    test.done();
+  },
   'test for negative decimal number' : function (test) {
     test.expect(2);
     test.deepEqual(-1243.111, msgpack.unpack(msgpack.pack(-1243.111)));

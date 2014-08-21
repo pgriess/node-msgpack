@@ -133,8 +133,10 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
         throw MsgpackException("Cowardly refusing to pack object with circular reference");
     }
 
-    if (v8obj->IsUndefined() || v8obj->IsNull()) {
+    if (v8obj->IsNull()) {
         mo->type = MSGPACK_OBJECT_NIL;
+    } else if (v8obj->IsUndefined()) {
+        mo->type = MSGPACK_OBJECT_UNDEF;
     } else if (v8obj->IsBoolean()) {
         mo->type = MSGPACK_OBJECT_BOOLEAN;
         mo->via.boolean = v8obj->BooleanValue();
@@ -224,6 +226,9 @@ msgpack_to_v8(msgpack_object *mo) {
     switch (mo->type) {
     case MSGPACK_OBJECT_NIL:
         return NanNull();
+
+    case MSGPACK_OBJECT_UNDEF:
+        return NanUndefined();
 
     case MSGPACK_OBJECT_BOOLEAN:
         return (mo->via.boolean) ?

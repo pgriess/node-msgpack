@@ -201,7 +201,8 @@ msgpack_unpack_func(int, _execute)(msgpack_unpack_struct(_context)* ctx, const c
 					push_simple_value(_false);
 				case 0xc3:  // true
 					push_simple_value(_true);
-				//case 0xc4:
+				case 0xc4:
+					push_simple_value(_undef);
 				//case 0xc5:
 				//case 0xc6:
 				//case 0xc7:

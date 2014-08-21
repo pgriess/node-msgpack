@@ -87,6 +87,7 @@ static int msgpack_pack_float(msgpack_packer* pk, float d);
 static int msgpack_pack_double(msgpack_packer* pk, double d);
 
 static int msgpack_pack_nil(msgpack_packer* pk);
+static int msgpack_pack_undef(msgpack_packer* pk);
 static int msgpack_pack_true(msgpack_packer* pk);
 static int msgpack_pack_false(msgpack_packer* pk);
 
