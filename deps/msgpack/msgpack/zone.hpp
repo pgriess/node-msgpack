@@ -44,7 +44,16 @@ public:
 	void clear();
 
 	void swap(zone& o);
-
+	static void* operator new(std::size_t size) throw(std::bad_alloc)
+	{
+		void* p = ::malloc(size);
+		if (!p) throw std::bad_alloc();
+		return p;
+	}
+	static void operator delete(void *p) throw()
+	{
+		::free(p);
+	}
 	
 	template <typename T>
 	T* allocate();

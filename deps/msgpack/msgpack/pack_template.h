@@ -656,18 +656,18 @@ if(sizeof(unsigned long long) == 2) {
 
 msgpack_pack_inline_func(_float)(msgpack_pack_user x, float d)
 {
+	unsigned char buf[5];
 	union { float f; uint32_t i; } mem;
 	mem.f = d;
-	unsigned char buf[5];
 	buf[0] = 0xca; _msgpack_store32(&buf[1], mem.i);
 	msgpack_pack_append_buffer(x, buf, 5);
 }
 
 msgpack_pack_inline_func(_double)(msgpack_pack_user x, double d)
 {
+	unsigned char buf[9];
 	union { double f; uint64_t i; } mem;
 	mem.f = d;
-	unsigned char buf[9];
 	buf[0] = 0xcb;
 #if defined(__arm__) && !(__ARM_EABI__) // arm-oabi
     // https://github.com/msgpack/msgpack-perl/pull/1
@@ -713,7 +713,7 @@ msgpack_pack_inline_func(_false)(msgpack_pack_user x)
 msgpack_pack_inline_func(_array)(msgpack_pack_user x, size_t n)
 {
 	if(n < 16) {
-		unsigned char d = 0x90 | n;
+		unsigned char d = 0x90 | (uint8_t)n;
 		msgpack_pack_append_buffer(x, &d, 1);
 	} else if(n < 65536) {
 		unsigned char buf[3];
@@ -734,7 +734,7 @@ msgpack_pack_inline_func(_array)(msgpack_pack_user x, size_t n)
 msgpack_pack_inline_func(_map)(msgpack_pack_user x, size_t n)
 {
 	if(n < 16) {
-		unsigned char d = 0x80 | n;
+		unsigned char d = 0x80 | (uint8_t)n;
 		msgpack_pack_append_buffer(x, &TAKE8_8(d), 1);
 	} else if(n < 65536) {
 		unsigned char buf[3];
