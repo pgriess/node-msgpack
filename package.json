@@ -65,7 +65,7 @@
 		"lib": "lib"
 	},
 	"dependencies" : {
-		"nan" : "^1.5.1"
+		"nan" : "^1.6.2"
 	},
 	"devDependencies": {
 		"nodeunit" : "https://github.com/godsflaw/nodeunit/archive/master.tar.gz"
