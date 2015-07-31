@@ -141,8 +141,8 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
     } else if (v8obj->IsNumber()) {
         double d = v8obj->NumberValue();
         if (trunc(d) != d) {
-            mo->type = MSGPACK_OBJECT_DOUBLE;
-            mo->via.dec = d;
+            mo->type = MSGPACK_OBJECT_FLOAT;
+            mo->via.f64 = d;
         } else if (d > 0) {
             mo->type = MSGPACK_OBJECT_POSITIVE_INTEGER;
             mo->via.u64 = static_cast<uint64_t>(d);
@@ -151,21 +151,21 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
             mo->via.i64 = static_cast<int64_t>(d);
         }
     } else if (v8obj->IsString()) {
-        mo->type = MSGPACK_OBJECT_RAW;
-        mo->via.raw.size = static_cast<uint32_t>(DecodeBytes(v8obj, UTF8));
-        mo->via.raw.ptr = (char*) msgpack_zone_malloc(mz, mo->via.raw.size);
+        mo->type = MSGPACK_OBJECT_STR;
+        mo->via.str.size = static_cast<uint32_t>(DecodeBytes(v8obj, UTF8));
+        mo->via.str.ptr = (char*) msgpack_zone_malloc(mz, mo->via.str.size);
 
-        DecodeWrite((char*) mo->via.raw.ptr, mo->via.raw.size, v8obj, UTF8);
+        DecodeWrite((char*) mo->via.str.ptr, mo->via.str.size, v8obj, UTF8);
     } else if (v8obj->IsDate()) {
-        mo->type = MSGPACK_OBJECT_RAW;
+        mo->type = MSGPACK_OBJECT_STR;
         Handle<Date> date = Handle<Date>::Cast(v8obj);
         Handle<Function> func = Handle<Function>::Cast(date->Get(new_v8_obj<String>("toISOString")));
         Handle<Value> argv[1] = {};
         Handle<Value> result = func->Call(date, 0, argv);
-        mo->via.raw.size = static_cast<uint32_t>(DecodeBytes(result, UTF8));
-        mo->via.raw.ptr = (char*) msgpack_zone_malloc(mz, mo->via.raw.size);
+        mo->via.str.size = static_cast<uint32_t>(DecodeBytes(result, UTF8));
+        mo->via.str.ptr = (char*) msgpack_zone_malloc(mz, mo->via.str.size);
 
-        DecodeWrite((char*) mo->via.raw.ptr, mo->via.raw.size, result, UTF8);
+        DecodeWrite((char*) mo->via.str.ptr, mo->via.str.size, result, UTF8);
     } else if (v8obj->IsArray()) {
         Local<Object> o = v8obj->ToObject();
         Local<Array> a = Local<Array>::Cast(o);
@@ -184,9 +184,9 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
     } else if (Buffer::HasInstance(v8obj)) {
         Local<Object> buf = v8obj->ToObject();
 
-        mo->type = MSGPACK_OBJECT_RAW;
-        mo->via.raw.size = static_cast<uint32_t>(Buffer::Length(buf));
-        mo->via.raw.ptr = Buffer::Data(buf);
+        mo->type = MSGPACK_OBJECT_BIN;
+        mo->via.bin.size = static_cast<uint32_t>(Buffer::Length(buf));
+        mo->via.bin.ptr = Buffer::Data(buf);
     } else {
         Local<Object> o = v8obj->ToObject();
         Local<String> toJSON = new_v8_obj<String>("toJSON");
@@ -241,8 +241,8 @@ msgpack_to_v8(msgpack_object *mo) {
         // See comment for MSGPACK_OBJECT_POSITIVE_INTEGER
         return new_v8_obj<Number>(static_cast<double>(mo->via.i64));
 
-    case MSGPACK_OBJECT_DOUBLE:
-        return new_v8_obj<Number>(mo->via.dec);
+    case MSGPACK_OBJECT_FLOAT:
+        return new_v8_obj<Number>(mo->via.f64);
 
     case MSGPACK_OBJECT_ARRAY: {
         Local<Array> a = new_v8_obj<Array>(mo->via.array.size);
@@ -254,8 +254,11 @@ msgpack_to_v8(msgpack_object *mo) {
         return a;
     }
 
-    case MSGPACK_OBJECT_RAW:
-        return new_v8_obj<String>(mo->via.raw.ptr, mo->via.raw.size);
+    case MSGPACK_OBJECT_STR:
+        return new_v8_obj<String>(mo->via.str.ptr, mo->via.str.size);
+
+    case MSGPACK_OBJECT_BIN:
+        return NanNewBufferHandle(mo->via.bin.ptr, mo->via.bin.size);
 
     case MSGPACK_OBJECT_MAP: {
         Local<Object> o = new_v8_obj<Object>();
@@ -355,7 +358,7 @@ static NAN_METHOD(unpack) {
         NanReturnUndefined();
 
     default:
-        NanThrowError("Error de-serializing object");
+        return NanThrowError("Error de-serializing object");
     }
 }
 
