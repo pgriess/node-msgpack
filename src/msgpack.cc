@@ -202,7 +202,13 @@ v8_to_msgpack(Isolate* isolate, Handle<Value> v8obj, msgpack_object *mo, msgpack
         // for o.toJSON()
         if (o->Has(toJSON) && o->Get(toJSON)->IsFunction()) {
             Local<Function> fn = Local<Function>::Cast(o->Get(toJSON));
-            v8_to_msgpack(isolate, fn->Call(o, 0, NULL), mo, mz, depth);
+            TryCatch _tryCatch(isolate);
+            Handle<Value> fnVal = fn->Call(o, 0, NULL);
+            if (!_tryCatch.HasCaught()) {
+                v8_to_msgpack(isolate, fnVal, mo, mz, depth);
+            } else {
+                v8_to_msgpack(isolate, _tryCatch.Exception(), mo, mz, depth);
+            }
             return;
         }
 
