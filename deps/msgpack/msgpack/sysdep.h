@@ -153,24 +153,24 @@ typedef unsigned int _msgpack_atomic_counter_t;
 #define _msgpack_be64(x) (x)
 
 #define _msgpack_load16(cast, from) ((cast)( \
-        (((uint16_t)((uint8_t*)from)[1]) << 8) | \
-        (((uint16_t)((uint8_t*)from)[0])     ) ))
+        (((uint16_t)((uint8_t*)from)[0]) << 8) | \
+        (((uint16_t)((uint8_t*)from)[1])     ) ))
 
 #define _msgpack_load32(cast, from) ((cast)( \
-        (((uint32_t)((uint8_t*)from)[3]) << 24) | \
-        (((uint32_t)((uint8_t*)from)[2]) << 16) | \
-        (((uint32_t)((uint8_t*)from)[1]) <<  8) | \
-        (((uint32_t)((uint8_t*)from)[0])      ) ))
+        (((uint32_t)((uint8_t*)from)[0]) << 24) | \
+        (((uint32_t)((uint8_t*)from)[1]) << 16) | \
+        (((uint32_t)((uint8_t*)from)[2]) <<  8) | \
+        (((uint32_t)((uint8_t*)from)[3])      ) ))
 
 #define _msgpack_load64(cast, from) ((cast)( \
-        (((uint64_t)((uint8_t*)from)[7]) << 56) | \
-        (((uint64_t)((uint8_t*)from)[6]) << 48) | \
-        (((uint64_t)((uint8_t*)from)[5]) << 40) | \
-        (((uint64_t)((uint8_t*)from)[4]) << 32) | \
-        (((uint64_t)((uint8_t*)from)[3]) << 24) | \
-        (((uint64_t)((uint8_t*)from)[2]) << 16) | \
-        (((uint64_t)((uint8_t*)from)[1]) << 8)  | \
-        (((uint64_t)((uint8_t*)from)[0])     )  ))
+        (((uint64_t)((uint8_t*)from)[0]) << 56) | \
+        (((uint64_t)((uint8_t*)from)[1]) << 48) | \
+        (((uint64_t)((uint8_t*)from)[2]) << 40) | \
+        (((uint64_t)((uint8_t*)from)[3]) << 32) | \
+        (((uint64_t)((uint8_t*)from)[4]) << 24) | \
+        (((uint64_t)((uint8_t*)from)[5]) << 16) | \
+        (((uint64_t)((uint8_t*)from)[6]) << 8)  | \
+        (((uint64_t)((uint8_t*)from)[7])     )  ))
 #endif
 
 
@@ -190,6 +190,19 @@ typedef unsigned int _msgpack_atomic_counter_t;
     ({ cast val; memcpy(&val, (char*)from, 8); _msgpack_be64(val); })
 */
 
+
+#if !defined(__cplusplus) && defined(_MSC_VER)
+#if !defined(FALSE)
+#define FALSE (0)
+#endif
+#if !defined(TRUE)
+#define TRUE (!FALSE)
+#endif
+#define bool int
+#define true TRUE
+#define false FALSE
+#define inline __inline
+#endif
 
 #endif /* msgpack/sysdep.h */
 

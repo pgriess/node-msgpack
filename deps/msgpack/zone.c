@@ -84,9 +84,8 @@ void* msgpack_zone_malloc_expand(msgpack_zone* zone, size_t size)
 
 	msgpack_zone_chunk* chunk = (msgpack_zone_chunk*)malloc(
 			sizeof(msgpack_zone_chunk) + sz);
-
+	if (chunk == NULL)  return NULL;
 	char* ptr = ((char*)chunk) + sizeof(msgpack_zone_chunk);
-
 	chunk->next = cl->head;
 	cl->head = chunk;
 	cl->free = sz - size;
@@ -128,7 +127,7 @@ bool msgpack_zone_push_finalizer_expand(msgpack_zone* zone,
 {
 	msgpack_zone_finalizer_array* const fa = &zone->finalizer_array;
 
-	const size_t nused = fa->end - fa->array;
+	const size_t nused = (size_t)(fa->end - fa->array);
 
 	size_t nnext;
 	if(nused == 0) {
