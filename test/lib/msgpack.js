@@ -267,5 +267,19 @@ exports.msgpack = {
     test.expect(1);
     test.deepEqual(expect, msgpack.unpack(msgpack.pack(subject)));
     test.done();
+  },
+  'test for object with undefined' : function (test) {
+    var objectToTest = {
+      hello   : 'world',//,
+      myUndef : undefined
+    };
+    var actualObject = msgpack.unpack(msgpack.pack(objectToTest));
+    test.expect(4);
+    test.deepEqual(objectToTest, actualObject);
+    test.deepEqual(true, actualObject.hasOwnProperty('myUndef'));
+    test.isBoolean(actualObject.hasOwnProperty('myUndef'));
+    test.isUndefined(actualObject.myUndef);
+    test.done();
   }
+
 };
