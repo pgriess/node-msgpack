@@ -400,11 +400,16 @@ extern "C" void
 init(Handle<Object> target) {
     Isolate* isolate = Isolate::GetCurrent();
     NODE_SET_METHOD(target, "pack",   pack);
-    NODE_SET_METHOD(target, "unpack", unpack);
 
     // Go through this mess rather than call NODE_SET_METHOD so that we can set
     // a field on the function for 'bytes_remaining'.
-    msgpack_unpack_template.Reset(isolate, FunctionTemplate::New(isolate, unpack));
+    HandleScope handle_scope(isolate);
+    Local<FunctionTemplate> t       = FunctionTemplate::New(isolate, unpack);
+    Local<Function>         fn      = t->GetFunction();
+    const Local<String>     fn_name = String::NewFromUtf8(isolate, "unpack");
+    target->Set(fn_name, fn);
+
+    msgpack_unpack_template.Reset(isolate, t);
 }
 
 NODE_MODULE(msgpackBinding, init);
