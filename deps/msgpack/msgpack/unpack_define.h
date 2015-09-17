@@ -37,7 +37,7 @@ extern "C" {
 typedef enum {
 	CS_HEADER            = 0x00,  // nil
 
-	//CS_                = 0x01,
+	CS_UNDEF             = 0x01,  // undef
 	//CS_                = 0x02,  // false
 	//CS_                = 0x03,  // true
 

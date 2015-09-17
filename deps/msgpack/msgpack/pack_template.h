@@ -688,6 +688,16 @@ msgpack_pack_inline_func(_nil)(msgpack_pack_user x)
 	msgpack_pack_append_buffer(x, &d, 1);
 }
 
+/*
+ * Undef
+ */
+
+msgpack_pack_inline_func(_undef)(msgpack_pack_user x)
+{
+	static const unsigned char d = 0xc1;
+	msgpack_pack_append_buffer(x, &d, 1);
+}
+
 
 /*
  * Boolean

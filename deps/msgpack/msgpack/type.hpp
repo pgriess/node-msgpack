@@ -6,6 +6,7 @@
 #include "type/list.hpp"
 #include "type/map.hpp"
 #include "type/nil.hpp"
+#include "type/undef.hpp"
 #include "type/pair.hpp"
 #include "type/raw.hpp"
 #include "type/set.hpp"

@@ -13,6 +13,8 @@ using namespace std;
 using namespace v8;
 using namespace node;
 
+#define V8INTERNALSTR(x) String::NewFromUtf8(isolate, x, v8::String::kInternalizedString)
+
 #define SBUF_POOL 50000
 
 // MSC does not support C99 trunc function.
@@ -28,8 +30,8 @@ static Persistent<FunctionTemplate> msgpack_unpack_template;
 //the old way
 template<class T>
 NAN_INLINE static Local<T> new_v8_obj() {
-    #if NODE_MODULE_VERSION >11
-        return NanNew<T>();
+    #if NODE_MODULE_VERSION > 11
+        return Nan::New<T>();
     #else
         return T::New();
     #endif
@@ -37,27 +39,31 @@ NAN_INLINE static Local<T> new_v8_obj() {
 
 template<class T, class P>
 NAN_INLINE static Local<T> new_v8_obj(const P arg) {
-    #if NODE_MODULE_VERSION >11
-        return NanNew<T>(arg);
+    #if NODE_MODULE_VERSION > 11
+        return Nan::New<T>(arg);
     #else
         return T::New(arg);
     #endif
 }
 
-template<class T, class P1, class P2>
-NAN_INLINE static Local<T> new_v8_obj(const P1 arg1, const P2 arg2) {
-    #if NODE_MODULE_VERSION >11
-        return NanNew<T>(arg1, arg2);
-    #else
-        return T::New(arg1, arg2);
-    #endif
-}
-
 // An exception class that wraps a textual message
+#if NODE_MODULE_VERSION > 11
+class MsgpackException {
+    public:
+        MsgpackException(const char *str) : msg(str) {}
+
+        const std::string& getMessage() {
+            return msg;
+        }
+
+    private:
+        const std::string msg;
+};
+#else
 class MsgpackException {
     public:
         MsgpackException(const char *str) :
-            msg(NanNew<String>(str)) {
+            msg(Nan::New<String>(str)) {
         }
 
         Handle<Value> getThrownException() {
@@ -67,6 +73,7 @@ class MsgpackException {
     private:
         const Handle<String> msg;
 };
+#endif
 
 // A holder for a msgpack_zone object; ensures destruction on scope exit
 class MsgpackZone {
@@ -128,18 +135,20 @@ _free_sbuf(char *data, void *hint) {
 //
 // If a circular reference is detected, an exception is thrown.
 static void
-v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t depth) {
+v8_to_msgpack(Isolate* isolate, Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t depth) {
     if (512 < ++depth) {
         throw MsgpackException("Cowardly refusing to pack object with circular reference");
     }
 
-    if (v8obj->IsUndefined() || v8obj->IsNull()) {
+    if (v8obj->IsNull()) {
         mo->type = MSGPACK_OBJECT_NIL;
+    } else if (v8obj->IsUndefined()) {
+        mo->type = MSGPACK_OBJECT_UNDEF;
     } else if (v8obj->IsBoolean()) {
         mo->type = MSGPACK_OBJECT_BOOLEAN;
         mo->via.boolean = v8obj->BooleanValue();
     } else if (v8obj->IsNumber()) {
-        double d = v8obj->NumberValue();
+        const double d = v8obj->NumberValue();
         if (trunc(d) != d) {
             mo->type = MSGPACK_OBJECT_DOUBLE;
             mo->via.dec = d;
@@ -152,20 +161,20 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
         }
     } else if (v8obj->IsString()) {
         mo->type = MSGPACK_OBJECT_RAW;
-        mo->via.raw.size = static_cast<uint32_t>(DecodeBytes(v8obj, UTF8));
+        mo->via.raw.size = static_cast<uint32_t>(DecodeBytes(isolate, v8obj, UTF8));
         mo->via.raw.ptr = (char*) msgpack_zone_malloc(mz, mo->via.raw.size);
 
-        DecodeWrite((char*) mo->via.raw.ptr, mo->via.raw.size, v8obj, UTF8);
+        DecodeWrite(isolate, (char*) mo->via.raw.ptr, mo->via.raw.size, v8obj, UTF8);
     } else if (v8obj->IsDate()) {
         mo->type = MSGPACK_OBJECT_RAW;
         Handle<Date> date = Handle<Date>::Cast(v8obj);
-        Handle<Function> func = Handle<Function>::Cast(date->Get(new_v8_obj<String>("toISOString")));
+        Handle<Function> func = Handle<Function>::Cast(date->Get(V8INTERNALSTR("toISOString")));
         Handle<Value> argv[1] = {};
         Handle<Value> result = func->Call(date, 0, argv);
-        mo->via.raw.size = static_cast<uint32_t>(DecodeBytes(result, UTF8));
+        mo->via.raw.size = static_cast<uint32_t>(DecodeBytes(isolate, result, UTF8));
         mo->via.raw.ptr = (char*) msgpack_zone_malloc(mz, mo->via.raw.size);
 
-        DecodeWrite((char*) mo->via.raw.ptr, mo->via.raw.size, result, UTF8);
+        DecodeWrite(isolate, (char*) mo->via.raw.ptr, mo->via.raw.size, result, UTF8);
     } else if (v8obj->IsArray()) {
         Local<Object> o = v8obj->ToObject();
         Local<Array> a = Local<Array>::Cast(o);
@@ -179,7 +188,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
 
         for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> v = a->Get(i);
-            v8_to_msgpack(v, &mo->via.array.ptr[i], mz, depth);
+            v8_to_msgpack(isolate, v, &mo->via.array.ptr[i], mz, depth);
         }
     } else if (Buffer::HasInstance(v8obj)) {
         Local<Object> buf = v8obj->ToObject();
@@ -188,12 +197,18 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
         mo->via.raw.size = static_cast<uint32_t>(Buffer::Length(buf));
         mo->via.raw.ptr = Buffer::Data(buf);
     } else {
-        Local<Object> o = v8obj->ToObject();
-        Local<String> toJSON = new_v8_obj<String>("toJSON");
+        const Local<Object> o = v8obj->ToObject();
+        const Local<String> toJSON = V8INTERNALSTR("toJSON");
         // for o.toJSON()
         if (o->Has(toJSON) && o->Get(toJSON)->IsFunction()) {
             Local<Function> fn = Local<Function>::Cast(o->Get(toJSON));
-            v8_to_msgpack(fn->Call(o, 0, NULL), mo, mz, depth);
+            TryCatch _tryCatch(isolate);
+            Handle<Value> fnVal = fn->Call(o, 0, NULL);
+            if (!_tryCatch.HasCaught()) {
+                v8_to_msgpack(isolate, fnVal, mo, mz, depth);
+            } else {
+                v8_to_msgpack(isolate, _tryCatch.Exception(), mo, mz, depth);
+            }
             return;
         }
 
@@ -209,8 +224,8 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
         for (uint32_t i = 0; i < a->Length(); i++) {
             Local<Value> k = a->Get(i);
 
-            v8_to_msgpack(k, &mo->via.map.ptr[i].key, mz, depth);
-            v8_to_msgpack(o->Get(k), &mo->via.map.ptr[i].val, mz, depth);
+            v8_to_msgpack(isolate, k, &mo->via.map.ptr[i].key, mz, depth);
+            v8_to_msgpack(isolate, o->Get(k), &mo->via.map.ptr[i].val, mz, depth);
         }
     }
 }
@@ -223,12 +238,15 @@ static Handle<Value>
 msgpack_to_v8(msgpack_object *mo) {
     switch (mo->type) {
     case MSGPACK_OBJECT_NIL:
-        return NanNull();
+        return Nan::Null();
+
+    case MSGPACK_OBJECT_UNDEF:
+        return Nan::Undefined();
 
     case MSGPACK_OBJECT_BOOLEAN:
         return (mo->via.boolean) ?
-            NanTrue() :
-            NanFalse();
+            Nan::True() :
+            Nan::False();
 
     case MSGPACK_OBJECT_POSITIVE_INTEGER:
         // As per Issue #42, we need to use the base Number
@@ -254,8 +272,14 @@ msgpack_to_v8(msgpack_object *mo) {
         return a;
     }
 
-    case MSGPACK_OBJECT_RAW:
-        return new_v8_obj<String>(mo->via.raw.ptr, mo->via.raw.size);
+    case MSGPACK_OBJECT_RAW: {
+        Nan::MaybeLocal<v8::String> raw =  Nan::New<v8::String>(mo->via.raw.ptr, mo->via.raw.size);
+        if (raw.IsEmpty()) {
+            return Nan::Undefined();
+        } else {
+            return raw.ToLocalChecked();
+        }
+    }
 
     case MSGPACK_OBJECT_MAP: {
         Local<Object> o = new_v8_obj<Object>();
@@ -283,8 +307,9 @@ msgpack_to_v8(msgpack_object *mo) {
 //
 // Any number of objects can be provided as arguments, and all will be
 // serialized to the same bytestream, back-to-back.
-static NAN_METHOD(pack) {
-    NanScope();
+static void pack(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
+    HandleScope scope(isolate);
 
     msgpack_packer pk;
     MsgpackZone mz;
@@ -303,21 +328,28 @@ static NAN_METHOD(pack) {
         msgpack_object mo;
 
         try {
-            v8_to_msgpack(args[i], &mo, &mz._mz, 0);
+            v8_to_msgpack(isolate, args[i], &mo, &mz._mz, 0);
         } catch (MsgpackException e) {
+#if NODE_MODULE_VERSION > 11
+            isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, e.getMessage().c_str())));
+            return;
+#else
             return NanThrowError(e.getThrownException());
+#endif
         }
 
         if (msgpack_pack_object(&pk, mo)) {
-            return NanThrowTypeError("Error serializaing object");
+            return Nan::ThrowTypeError("Error serializaing object");
         }
     }
 
-    Local<Object> slowBuffer = NanNewBufferHandle(
+    Nan::MaybeLocal<v8::Object> slowBuffer = Nan::NewBuffer(
         sb->data, sb->size, _free_sbuf, (void *)sb
     );
 
-    NanReturnValue(slowBuffer);
+    if (!slowBuffer.IsEmpty()) {
+        args.GetReturnValue().Set(slowBuffer.ToLocalChecked());
+    }
 }
 
 // var o = msgpack.unpack(buf);
@@ -325,11 +357,11 @@ static NAN_METHOD(pack) {
 // Return the JavaScript object resulting from unpacking the contents of the
 // specified buffer. If the buffer does not contain a complete object, the
 // undefined value is returned.
-static NAN_METHOD(unpack) {
-    NanScope();
-
+static void unpack(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
+    HandleScope scope(isolate);
     if (args.Length() < 0 || !Buffer::HasInstance(args[0])) {
-        return NanThrowTypeError("First argument must be a Buffer");
+        return Nan::ThrowTypeError("First argument must be a Buffer");
     }
 
     Local<Object> buf = args[0]->ToObject();
@@ -342,37 +374,42 @@ static NAN_METHOD(unpack) {
     case MSGPACK_UNPACK_EXTRA_BYTES:
     case MSGPACK_UNPACK_SUCCESS:
         try {
-            NanNew<FunctionTemplate>(msgpack_unpack_template)->GetFunction()->Set(
-                new_v8_obj<String>("bytes_remaining"),
+            Nan::New<FunctionTemplate>(msgpack_unpack_template)->GetFunction()->Set(
+                V8INTERNALSTR("bytes_remaining"),
                 new_v8_obj<Integer>(static_cast<int32_t>(Buffer::Length(buf) - off))
             );
-            NanReturnValue(msgpack_to_v8(&mo));
+            args.GetReturnValue().Set(msgpack_to_v8(&mo));
         } catch (MsgpackException e) {
+#if NODE_MODULE_VERSION > 11
+            isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, e.getMessage().c_str())));
+            return;
+#else
             return NanThrowError(e.getThrownException());
+#endif
         }
 
     case MSGPACK_UNPACK_CONTINUE:
-        NanReturnUndefined();
+        return;
 
     default:
-        NanThrowError("Error de-serializing object");
+        Nan::ThrowError("Error de-serializing object");
     }
 }
 
 extern "C" void
 init(Handle<Object> target) {
-    NanScope();
-
-    target->Set(NanNew<String>("pack"), NanNew<FunctionTemplate>(pack)->GetFunction());
+    Isolate* isolate = Isolate::GetCurrent();
+    NODE_SET_METHOD(target, "pack",   pack);
 
     // Go through this mess rather than call NODE_SET_METHOD so that we can set
     // a field on the function for 'bytes_remaining'.
-    NanAssignPersistent(msgpack_unpack_template, NanNew<FunctionTemplate>(unpack));
+    HandleScope handle_scope(isolate);
+    Local<FunctionTemplate> t       = FunctionTemplate::New(isolate, unpack);
+    Local<Function>         fn      = t->GetFunction();
+    const Local<String>     fn_name = String::NewFromUtf8(isolate, "unpack");
+    target->Set(fn_name, fn);
 
-    target->Set(
-        NanNew<String>("unpack"),
-        NanNew<FunctionTemplate>(msgpack_unpack_template)->GetFunction()
-    );
+    msgpack_unpack_template.Reset(isolate, t);
 }
 
 NODE_MODULE(msgpackBinding, init);

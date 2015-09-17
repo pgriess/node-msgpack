@@ -62,6 +62,12 @@ exports.msgpack = {
     test.isNull(msgpack.unpack(msgpack.pack(null)));
     test.done();
   },
+  'test for undefined' : function (test) {
+    test.expect(2);
+    test.deepEqual(undefined, msgpack.unpack(msgpack.pack(undefined)));
+    test.isUndefined(msgpack.unpack(msgpack.pack(undefined)));
+    test.done();
+  },
   'test for negative decimal number' : function (test) {
     test.expect(2);
     test.deepEqual(-1243.111, msgpack.unpack(msgpack.pack(-1243.111)));
@@ -261,5 +267,19 @@ exports.msgpack = {
     test.expect(1);
     test.deepEqual(expect, msgpack.unpack(msgpack.pack(subject)));
     test.done();
+  },
+  'test for object with undefined' : function (test) {
+    var objectToTest = {
+      hello   : 'world',//,
+      myUndef : undefined
+    };
+    var actualObject = msgpack.unpack(msgpack.pack(objectToTest));
+    test.expect(4);
+    test.deepEqual(objectToTest, actualObject);
+    test.deepEqual(true, actualObject.hasOwnProperty('myUndef'));
+    test.isBoolean(actualObject.hasOwnProperty('myUndef'));
+    test.isUndefined(actualObject.myUndef);
+    test.done();
   }
+
 };

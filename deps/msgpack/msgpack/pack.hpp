@@ -70,6 +70,7 @@ public:
 	packer<Stream>& pack_double(double d);
 
 	packer<Stream>& pack_nil();
+	packer<Stream>& pack_undef();
 	packer<Stream>& pack_true();
 	packer<Stream>& pack_false();
 
@@ -116,6 +117,7 @@ private:
 	static void _pack_double(Stream& x, double d);
 
 	static void _pack_nil(Stream& x);
+	static void _pack_undef(Stream& x);
 	static void _pack_true(Stream& x);
 	static void _pack_false(Stream& x);
 
@@ -302,6 +304,10 @@ inline packer<Stream>& packer<Stream>::pack_double(double d)
 template <typename Stream>
 inline packer<Stream>& packer<Stream>::pack_nil()
 { _pack_nil(m_stream); return *this; }
+
+template <typename Stream>
+inline packer<Stream>& packer<Stream>::pack_undef()
+{ _pack_undef(m_stream); return *this; }
 
 template <typename Stream>
 inline packer<Stream>& packer<Stream>::pack_true()

@@ -27,6 +27,10 @@ std::ostream& operator<< (std::ostream& s, const object o)
 		s << "nil";
 		break;
 
+	case type::UNDEF:
+		s << "undef";
+		break;
+
 	case type::BOOLEAN:
 		s << (o.via.boolean ? "true" : "false");
 		break;

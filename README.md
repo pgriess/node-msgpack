@@ -4,6 +4,11 @@ API for serializing and de-serializing JavaScript objects using the
 addon compared to the native `JSON` object isn't too bad, and the space
 required for serialized data is far less than JSON.
 
+### Extension: support for undefined
+The standard msgpack protocol turns `undefined` into `null`.
+This branch adopts (creationix's extension)[https://github.com/creationix/msgpack-js-browser#extension]
+for `undefined` and uses for it the reserved value '0xc4'
+
 ### Performance
 
 `node-msgpack` is currently slower than the built-in `JSON.stringify()` and
@@ -56,7 +61,7 @@ instance. This object emits `msg` events when an object has been received.
     var msgpack = require('msgpack');
 
     // ... get a net.Stream instance, s, from somewhere
-    
+
     var ms = new msgpack.Stream(s);
     ms.addListener('msg', function(m) {
         sys.debug('received message: ' + sys.inspect(m));
@@ -120,7 +125,7 @@ stdin and writing to stdout.
 
     % echo '[1, 2, 3]' | ./bin/json2msgpack | xxd -
     0000000: 9301 0203                                ....
-    % echo '[1, 2, 3]' | ./bin/json2msgpack | ./bin/msgpack2json 
+    % echo '[1, 2, 3]' | ./bin/json2msgpack | ./bin/msgpack2json
     [1,2,3]
 
 ### Building, Installation, Testing

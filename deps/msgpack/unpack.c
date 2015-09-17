@@ -95,6 +95,9 @@ static inline int template_callback_double(unpack_user* u, double d, msgpack_obj
 static inline int template_callback_nil(unpack_user* u, msgpack_object* o)
 { o->type = MSGPACK_OBJECT_NIL; return 0; }
 
+static inline int template_callback_undef(unpack_user* u, msgpack_object* o)
+{ o->type = MSGPACK_OBJECT_UNDEF; return 0; }
+
 static inline int template_callback_true(unpack_user* u, msgpack_object* o)
 { o->type = MSGPACK_OBJECT_BOOLEAN; o->via.boolean = true; return 0; }
 
