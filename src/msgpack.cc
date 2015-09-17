@@ -406,7 +406,7 @@ init(Handle<Object> target) {
     HandleScope handle_scope(isolate);
     Local<FunctionTemplate> t       = FunctionTemplate::New(isolate, unpack);
     Local<Function>         fn      = t->GetFunction();
-    const Local<String>     fn_name = String::NewFromUtf8(isolate, "unpack");
+    const Local<String>     fn_name = V8INTERNALSTR("unpack");
     target->Set(fn_name, fn);
 
     msgpack_unpack_template.Reset(isolate, t);
