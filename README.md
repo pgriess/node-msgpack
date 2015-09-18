@@ -7,7 +7,7 @@ required for serialized data is far less than JSON.
 ### Extension: support for undefined
 The standard msgpack protocol turns `undefined` into `null`.
 This branch adopts (creationix's extension)[https://github.com/creationix/msgpack-js-browser#extension]
-for `undefined` and uses for it the reserved value '0xc4'
+for `undefined` and uses for it the reserved value '0xc1'
 
 ### Performance
 
