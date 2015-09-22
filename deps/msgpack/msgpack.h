@@ -21,6 +21,7 @@
  * @}
  */
 
+#include "msgpack/util.h"
 #include "msgpack/object.h"
 #include "msgpack/zone.h"
 #include "msgpack/pack.h"
