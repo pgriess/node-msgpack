@@ -31,12 +31,12 @@ class MsgpackException {
             msg(Nan::New<String>(str).ToLocalChecked()) {
         }
 
-        Handle<Value> getThrownException() {
-            return Exception::TypeError(msg);
+        Local<Value> getThrownException() {
+            return Nan::TypeError(msg);
         }
 
     private:
-        const Handle<String> msg;
+        const Local<String> msg;
 };
 
 // A holder for a msgpack_zone object; ensures destruction on scope exit
@@ -190,7 +190,7 @@ v8_to_msgpack(Handle<Value> v8obj, msgpack_object *mo, msgpack_zone *mz, size_t 
 //
 // This method is recursive. It will probably blow out the stack on objects
 // with extremely deep nesting.
-static Handle<Value>
+static Local<Value>
 msgpack_to_v8(msgpack_object *mo) {
     switch (mo->type) {
     case MSGPACK_OBJECT_NIL:
