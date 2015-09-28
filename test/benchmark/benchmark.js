@@ -1,5 +1,4 @@
 var fs      = require('fs'),
-    sys     = require('sys'),
     msgpack = require("../../lib/msgpack"),
     stub    = require("../fixtures/stub");
 
@@ -22,7 +21,7 @@ function _tear_down(callback) {
 exports.benchmark = {
   setUp : _set_up,
   tearDown : _tear_down,
-  'msgpack.pack faster than JSON.stringify with array of 1m objects' : function (test) {
+  'JSON.stringify faster than msgpack.pack with array of 1m objects' : function (test) {
     console.log();
     var jsonStr;
     var now = Date.now();
@@ -38,16 +37,16 @@ exports.benchmark = {
       "msgpack.pack: "+packTime+"ms, JSON.stringify: "+stringifyTime+"ms"
     );
     console.log(
-      "ratio of msgpack.pack/JSON.stringify: " + packTime/stringifyTime
+      "ratio of JSON.stringify/msgpack.pack: " + stringifyTime/packTime
     );
     test.expect(1);
     test.ok(
-      packTime < stringifyTime,
+      packTime > stringifyTime,
       "msgpack.pack: "+packTime+"ms, JSON.stringify: "+stringifyTime+"ms"
     );
     test.done();
   },
-//  'msgpack.unpack faster than JSON.parse with array of 1m objects' : function (test) {
+//  'JSON.parse faster than msgpack.unpack with array of 1m objects' : function (test) {
 //    console.log();
 //    var jsonStr;
 //    jsonStr = JSON.stringify(DATA);
@@ -66,10 +65,10 @@ exports.benchmark = {
 //    console.log(
 //      "msgpack.unpack: "+unpackTime+"ms, JSON.parse: "+parseTime+"ms"
 //    );
-//    console.log("ratio of msgpack.unpack/parseTime: " + unpackTime/parseTime);
+//    console.log("ratio of parseTime/msgpack.unpack: " + parseTime/unpackTime);
 //    test.expect(1);
 //    test.ok(
-//      unpackTime < parseTime,
+//      unpackTime > parseTime,
 //      "msgpack.unpack: "+unpackTime+"ms, JSON.parse: "+parseTime+"ms"
 //    );
 //    test.done();
@@ -147,16 +146,16 @@ exports.benchmark = {
       var now = Date.now();
       mpBuf = msgpack.pack(DATA);
       console.log('msgpack pack:   ' + (Date.now() - now) + ' ms');
-    
+
       now = Date.now();
       msgpack.unpack(mpBuf);
       console.log('msgpack unpack: ' + (Date.now() - now) + ' ms');
-    
+
       var jsonStr;
       now = Date.now();
       jsonStr = JSON.stringify(DATA);
       console.log('json    pack:   ' + (Date.now() - now) + ' ms');
-    
+
       now = Date.now();
       JSON.parse(jsonStr);
       console.log('json    unpack: ' + (Date.now() - now) + ' ms');
@@ -176,20 +175,20 @@ exports.benchmark = {
         mpBuf = msgpack.pack(d);
       });
       console.log('msgpack pack:   ' + (Date.now() - now) + ' ms');
-    
+
       now = Date.now();
       DATA.forEach(function(d) {
         msgpack.unpack(mpBuf);
       });
       console.log('msgpack unpack: ' + (Date.now() - now) + ' ms');
-    
+
       var jsonStr;
       now = Date.now();
       DATA.forEach(function(d) {
         jsonStr = JSON.stringify(d);
       });
       console.log('json    pack:   ' + (Date.now() - now) + ' ms');
-    
+
       now = Date.now();
       DATA.forEach(function(d) {
         JSON.parse(jsonStr);
