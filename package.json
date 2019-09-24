@@ -64,11 +64,11 @@
 	"directories": {
 		"lib": "lib"
 	},
-	"dependencies" : {
-		"nan" : "^2.0.9"
+	"dependencies": {
+		"nan": "^2.14.0"
 	},
 	"devDependencies": {
-		"nodeunit" : "https://github.com/godsflaw/nodeunit/archive/master.tar.gz"
+		"nodeunit": "https://github.com/godsflaw/nodeunit/archive/master.tar.gz"
 	},
 	"engines": {
 		"node": ">=0.12.7"
