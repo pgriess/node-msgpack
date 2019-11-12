@@ -2,16 +2,16 @@
 // Read JSON data from stdin and write MessagePack data to stdout.
 
 var msgpack = require('msgpack');
-var net = require('net');
+var tty = require('tty');
 
 var data = '';
 
-var s = new net.Stream(0);
+var s = new tty.ReadStream(0);
 s.addListener('data', function(d) {
     data += d;
 });
 s.addListener('end', function() {
-    s = new net.Stream(1);
+    s = new tty.WriteStream(1);
     s.resume();
 
     if (s.write(msgpack.pack(JSON.parse(data)))) {
